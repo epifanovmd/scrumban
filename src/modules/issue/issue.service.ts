@@ -9,6 +9,7 @@ import { Includeable, Op, Transaction, WhereOptions } from "sequelize";
 
 import { sequelize } from "../../db";
 import { Board, EBoardType } from "../board/board.model";
+import { Comment } from "../comment/comment.model";
 import { IssueOrder } from "../issue-order/issue-order.model";
 import { IssueType } from "../issue-type/issue-type.model";
 import { Priority } from "../priority/priority.model";
@@ -19,7 +20,12 @@ import { Status } from "../status/status.model";
 import { UserService } from "../user";
 import { User } from "../user/user.model";
 import { Workflow, WorkflowStatus } from "../workflow/workflow.model";
-import { IIssueCreateRequest, IIssueUpdateRequest, Issue } from "./issue.model";
+import {
+  IIssueCreateRequest,
+  IIssueOrderUpdateRequest,
+  IIssueUpdateRequest,
+  Issue,
+} from "./issue.model";
 
 @injectable()
 export class IssueService {
@@ -31,6 +37,7 @@ export class IssueService {
   async getIssues(
     offset?: number,
     limit?: number,
+    includeRelations?: boolean,
     where?: WhereOptions<Issue>,
   ) {
     return Issue.findAll({
@@ -38,14 +45,17 @@ export class IssueService {
       limit,
       offset,
       order: [["createdAt", "DESC"]],
-      include: IssueService.include,
+      include: IssueService.getIncludes(includeRelations),
     });
   }
 
-  async getIssueById(id: string, transaction?: Transaction) {
+  async getIssueById(
+    id: string,
+    options?: { includeRelations?: boolean; transaction?: Transaction },
+  ) {
     const issue = await Issue.findByPk(id, {
-      include: IssueService.include,
-      transaction,
+      include: IssueService.getIncludes(options?.includeRelations),
+      transaction: options?.transaction,
     });
 
     if (!issue) throw new NotFoundException("Issue not found");
@@ -53,10 +63,15 @@ export class IssueService {
     return issue;
   }
 
-  async getIssuesByProject(projectId: string, offset?: number, limit?: number) {
+  async getIssuesByProject(
+    projectId: string,
+    offset?: number,
+    limit?: number,
+    includeRelations?: boolean,
+  ) {
     await this._projectService.getProjectById(projectId);
 
-    return this.getIssues(offset, limit, { projectId });
+    return this.getIssues(offset, limit, includeRelations, { projectId });
   }
 
   async createIssue(data: IIssueCreateRequest) {
@@ -78,6 +93,14 @@ export class IssueService {
           statusId = initialStatus.id;
         }
 
+        if (data.boardId) {
+          const board = await Board.findByPk(data.boardId, { transaction: t });
+
+          if (board?.type === EBoardType.KANBAN) {
+            await this._checkWipLimit(statusId, t);
+          }
+        }
+
         return await Issue.create(
           {
             ...data,
@@ -89,18 +112,36 @@ export class IssueService {
           },
         );
       })
-      .then(issue => this.getIssueById(issue.id));
+      .then(issue => this.getIssueById(issue.id, { includeRelations: true }));
   }
 
-  async updateIssue(id: string, data: IIssueUpdateRequest) {
+  async updateIssue(
+    id: string,
+    { includeRelations, ...data }: IIssueUpdateRequest,
+  ) {
     return sequelize.transaction(async (t: Transaction) => {
       await this._validateIssueDependencies(data, t);
 
       const issue = await this.getIssueById(id);
 
+      if (data.statusId) {
+        const issue = await this.getIssueById(id, {
+          transaction: t,
+          includeRelations,
+        });
+
+        if (issue.boardId) {
+          const board = await Board.findByPk(issue.boardId, { transaction: t });
+
+          if (board?.type === EBoardType.KANBAN) {
+            await this._checkWipLimit(data.statusId, t);
+          }
+        }
+      }
+
       await issue.update(data, { transaction: t });
 
-      return this.getIssueById(id);
+      return this.getIssueById(id, { transaction: t, includeRelations });
     });
   }
 
@@ -125,20 +166,7 @@ export class IssueService {
 
     // Для Kanban проверяем WIP-лимиты
     if (board?.type === EBoardType.KANBAN) {
-      const workflowStatus = await WorkflowStatus.findOne({
-        where: { statusId },
-        include: [Workflow],
-      });
-
-      if (workflowStatus?.wipLimit) {
-        const currentCount = await Issue.count({ where: { statusId } });
-
-        if (currentCount >= workflowStatus.wipLimit) {
-          throw new ConflictException(
-            `WIP limit exceeded for status ${statusId}`,
-          );
-        }
-      }
+      await this._checkWipLimit(statusId);
     }
 
     // Для Scrum нельзя менять статусы задач в закрытом спринте
@@ -155,17 +183,18 @@ export class IssueService {
 
   async updateIssueOrder(
     issueId: string,
-    newStatusId: string,
-    newOrder: number,
-    boardId: string,
+    { order, boardId, includeRelations, statusId }: IIssueOrderUpdateRequest,
   ) {
     return sequelize.transaction(async (t: Transaction) => {
-      const issue = await this.getIssueById(issueId, t);
+      const issue = await this.getIssueById(issueId, {
+        transaction: t,
+        includeRelations,
+      });
       const board = await Board.findByPk(boardId, { transaction: t });
 
       if (!board) throw new NotFoundException("Board not found");
 
-      const status = await Status.findByPk(newStatusId, { transaction: t });
+      const status = await Status.findByPk(statusId, { transaction: t });
 
       if (!status) throw new NotFoundException("Status not found");
 
@@ -180,8 +209,8 @@ export class IssueService {
         by: 1,
         where: {
           boardId,
-          statusId: newStatusId,
-          order: { [Op.gte]: newOrder },
+          statusId: statusId,
+          order: { [Op.gte]: order },
         },
         transaction: t,
       });
@@ -190,17 +219,17 @@ export class IssueService {
       await IssueOrder.create(
         {
           issueId,
-          statusId: newStatusId,
+          statusId,
           boardId,
-          order: newOrder,
+          order,
         },
         { transaction: t },
       );
 
       // Обновляем статус задачи
-      await issue.update({ statusId: newStatusId }, { transaction: t });
+      await issue.update({ statusId }, { transaction: t });
 
-      return this.getIssueById(issueId, t);
+      return this.getIssueById(issueId, { transaction: t, includeRelations });
     });
   }
 
@@ -243,32 +272,60 @@ export class IssueService {
     }
   }
 
-  static get include(): Includeable[] {
-    return [
-      {
-        model: IssueType,
-        as: "type",
-      },
-      {
-        model: Priority,
-        as: "priority",
-      },
-      {
-        model: Status,
-        as: "status",
-      },
-      {
-        model: Project,
-        as: "project",
-      },
+  private async _checkWipLimit(statusId: string, transaction?: Transaction) {
+    const workflowStatus = await WorkflowStatus.findOne({
+      where: { statusId },
+      include: [Workflow],
+      transaction,
+    });
+
+    if (workflowStatus?.wipLimit) {
+      const currentCount = await Issue.count({
+        where: { statusId },
+        transaction,
+      });
+
+      if (currentCount >= workflowStatus.wipLimit) {
+        throw new ConflictException(
+          `WIP limit exceeded for this status. Current: ${currentCount}/${workflowStatus.wipLimit}`,
+        );
+      }
+    }
+  }
+
+  static getIncludes(includeAll: boolean = false): Includeable[] {
+    const baseIncludes = [
+      { model: IssueType, as: "type" },
       {
         model: User,
         as: "assignee",
       },
-      {
-        model: User,
-        as: "reporter",
-      },
+      { model: Priority },
     ];
+
+    if (includeAll) {
+      return [
+        ...baseIncludes,
+        Status,
+        Project,
+        Board,
+        Sprint,
+        {
+          model: User,
+          as: "reporter",
+        },
+        {
+          model: Issue,
+          as: "parent",
+        },
+        {
+          model: Issue,
+          as: "children",
+        },
+        Comment,
+      ];
+    }
+
+    return baseIncludes;
   }
 }

@@ -23,7 +23,7 @@ export interface IStatusDto {
   updatedAt: Date;
 }
 
-export interface IStatusListDto extends ListResponse<IStatusDto[]> {}
+export type IStatusListDto = IStatusDto[];
 
 export interface IStatusCreateRequest {
   name: string;

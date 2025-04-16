@@ -150,12 +150,15 @@ export class BacklogService {
 
   static get include(): Includeable[] {
     return [
-      { model: Project, as: "project" },
+      Project,
       {
-        model: BacklogItem,
-        as: "items",
-        include: [{ model: Issue, as: "issue" }],
-        order: [["order", "ASC"]],
+        model: Issue,
+        as: "backlogIssues",
+        through: {
+          attributes: ["order"], // Включаем поле order из junction таблицы
+          as: "backlogItem", // Указываем псевдоним для junction модели
+        },
+        order: [[{ model: BacklogItem, as: "backlogItem" }, "order", "ASC"]],
       },
     ];
   }

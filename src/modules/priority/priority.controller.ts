@@ -36,12 +36,7 @@ export class PriorityController extends Controller {
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
   ): Promise<IPriorityListDto> {
-    return this._priorityService.getPriorities(offset, limit).then(result => ({
-      offset,
-      limit,
-      count: result.length,
-      data: result,
-    }));
+    return this._priorityService.getPriorities(offset, limit);
   }
 
   @Security("jwt")

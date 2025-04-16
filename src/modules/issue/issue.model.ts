@@ -37,6 +37,7 @@ export interface IIssueCreateRequest {
 
 export interface IIssueUpdateRequest extends Partial<IIssueCreateRequest> {
   statusId?: string;
+  includeRelations?: boolean;
 }
 
 export interface IIssueDto {
@@ -63,6 +64,7 @@ export interface IIssueOrderUpdateRequest {
   statusId: string;
   order: number;
   boardId: string;
+  includeRelations?: boolean;
 }
 
 export interface IIssueListDto extends ListResponse<IIssueDto[]> {}

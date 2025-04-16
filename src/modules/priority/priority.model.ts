@@ -28,7 +28,7 @@ export interface IPriorityDto {
   updatedAt: Date;
 }
 
-export interface IPriorityListDto extends ListResponse<IPriorityDto[]> {}
+export type IPriorityListDto = IPriorityDto[];
 
 export interface IPriorityCreateRequest {
   name: EPriority;
@@ -104,3 +104,42 @@ Priority.init(
     },
   },
 );
+
+Priority.afterSync(async () => {
+  try {
+    const count = await Priority.count();
+
+    if (count === 0) {
+      await Priority.bulkCreate([
+        {
+          name: EPriority.HIGHEST,
+          icon: "arrow-up",
+          color: "#FF0000",
+        },
+        {
+          name: EPriority.HIGH,
+          icon: "chevron-up",
+          color: "#FF6347",
+        },
+        {
+          name: EPriority.MEDIUM,
+          icon: "minus",
+          color: "#FFA500",
+        },
+        {
+          name: EPriority.LOW,
+          icon: "chevron-down",
+          color: "#32CD32",
+        },
+        {
+          name: EPriority.LOWEST,
+          icon: "arrow-down",
+          color: "#008000",
+        },
+      ]);
+      console.log("Default priorities created successfully");
+    }
+  } catch (error) {
+    console.error("Failed to create default priorities:", error);
+  }
+});

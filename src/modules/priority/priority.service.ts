@@ -20,10 +20,7 @@ export class PriorityService {
       where,
       limit,
       offset,
-      order: [
-        ["order", "ASC"],
-        ["createdAt", "DESC"],
-      ],
+      order: [["name", "ASC"]],
       include: PriorityService.include,
     });
   }

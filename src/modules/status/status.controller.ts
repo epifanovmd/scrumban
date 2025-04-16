@@ -34,12 +34,7 @@ export class StatusController extends Controller {
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
   ): Promise<IStatusListDto> {
-    return this._statusService.getStatuses(offset, limit).then(result => ({
-      offset,
-      limit,
-      count: result.length,
-      data: result,
-    }));
+    return this._statusService.getStatuses(offset, limit);
   }
 
   @Security("jwt")

@@ -32,40 +32,55 @@ export class IssueController extends Controller {
 
   @Security("jwt")
   @Get("list")
-  getIssues(
+  async getIssues(
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
     @Query("projectId") projectId?: string,
+    @Query("includeRelations") includeRelations?: boolean,
   ): Promise<IIssueListDto> {
-    return this._issueService
-      .getIssues(offset, limit, projectId ? { projectId } : undefined)
-      .then(result => ({
-        offset,
-        limit,
-        count: result.length,
-        data: result.map(res => res.toJSON()),
-      }));
+    const result = await this._issueService.getIssues(
+      offset,
+      limit,
+      includeRelations,
+      projectId ? { projectId } : undefined,
+    );
+
+    return {
+      offset,
+      limit,
+      count: result.length,
+      data: result.map(res => res.toJSON()),
+    };
   }
 
   @Security("jwt")
   @Get("{id}")
-  getIssueById(id: string): Promise<IIssueDto> {
-    return this._issueService.getIssueById(id).then(res => res.toJSON());
+  async getIssueById(
+    id: string,
+    @Query("includeRelations") includeRelations?: boolean,
+  ): Promise<IIssueDto> {
+    const res = await this._issueService.getIssueById(id, { includeRelations });
+
+    return res.toJSON();
   }
 
   @Security("jwt")
   @Post()
-  createIssue(@Body() body: IIssueCreateRequest): Promise<IIssueDto> {
-    return this._issueService.createIssue(body).then(res => res.toJSON());
+  async createIssue(@Body() body: IIssueCreateRequest): Promise<IIssueDto> {
+    const res = await this._issueService.createIssue(body);
+
+    return res.toJSON();
   }
 
   @Security("jwt")
   @Patch("{id}")
-  updateIssue(
+  async updateIssue(
     id: string,
     @Body() body: IIssueUpdateRequest,
   ): Promise<IIssueDto> {
-    return this._issueService.updateIssue(id, body).then(res => res.toJSON());
+    const res = await this._issueService.updateIssue(id, body);
+
+    return res.toJSON();
   }
 
   @Security("jwt", ["role:admin"])
@@ -76,18 +91,18 @@ export class IssueController extends Controller {
 
   @Security("jwt")
   @Post("{issueId}/assign/{userId}")
-  assignIssue(issueId: string, userId: string): Promise<IIssueDto> {
-    return this._issueService
-      .assignIssue(issueId, userId)
-      .then(res => res.toJSON());
+  async assignIssue(issueId: string, userId: string): Promise<IIssueDto> {
+    const res = await this._issueService.assignIssue(issueId, userId);
+
+    return res.toJSON();
   }
 
   @Security("jwt")
   @Post("{issueId}/status/{statusId}")
-  changeStatus(issueId: string, statusId: string): Promise<IIssueDto> {
-    return this._issueService
-      .changeStatus(issueId, statusId)
-      .then(res => res.toJSON());
+  async changeStatus(issueId: string, statusId: string): Promise<IIssueDto> {
+    const res = await this._issueService.changeStatus(issueId, statusId);
+
+    return res.toJSON();
   }
 
   @Security("jwt")
@@ -97,7 +112,7 @@ export class IssueController extends Controller {
     @Body() body: IIssueOrderUpdateRequest,
   ): Promise<IIssueDto> {
     return this._issueService
-      .updateIssueOrder(id, body.statusId, body.order, body.boardId)
+      .updateIssueOrder(id, body)
       .then(res => res.toJSON());
   }
 }
