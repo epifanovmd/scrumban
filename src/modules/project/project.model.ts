@@ -19,14 +19,24 @@ import {
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
 import { Backlog } from "../backlog/backlog.model";
+import { Board, EBoardType } from "../board/board.model";
 import { ITeamDto, Team } from "../team/team.model";
 import { User } from "../user/user.model";
 import { IUserDto } from "../user/user.model";
+import {
+  createDefaultKanbanWorkflow,
+  createDefaultScrumWorkflow,
+} from "../workflow/workflow.utils";
 
 export enum EProjectVisibility {
   PRIVATE = "private",
   TEAM = "team",
   PUBLIC = "public",
+}
+
+export enum EProjectType {
+  SCRUM = "scrum",
+  KANBAN = "kanban",
 }
 
 export interface IProjectDto {
@@ -46,6 +56,7 @@ export interface IProjectListDto extends ListResponse<IProjectDto[]> {}
 export interface IProjectCreateRequest {
   name: string;
   key: string;
+  type: EProjectType;
   description?: string;
   visibility?: EProjectVisibility;
   leadId?: string;
@@ -64,6 +75,7 @@ export class Project extends Model<ProjectModel, ProjectCreateModel> {
   declare id: string;
   declare name: string;
   declare key: string;
+  declare type: EProjectType;
   declare description?: string;
   declare visibility: EProjectVisibility;
 
@@ -124,6 +136,11 @@ Project.init(
         isUppercase: true,
       },
     },
+    type: {
+      type: DataTypes.ENUM(...Object.values(EProjectType)),
+      defaultValue: EProjectType.KANBAN,
+      allowNull: false,
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
@@ -159,18 +176,50 @@ Project.init(
   },
 );
 
-// Хук для автоматического создания дефолтного бэклога при создании проекта
 Project.afterCreate(async (project, options) => {
-  try {
-    await Backlog.create(
-      {
-        name: "Default Backlog",
-        isDefault: true,
-        projectId: project.id,
-      },
-      { transaction: options.transaction },
-    );
-  } catch (error) {
-    console.error("Failed to create default backlog:", error);
+  const { transaction } = options;
+
+  // 1. Создаем бэклог для любого проекта
+  await Backlog.create(
+    {
+      name: "Default Backlog",
+      projectId: project.id,
+      isDefault: true,
+    },
+    { transaction },
+  );
+
+  // 2. Создаем доску в зависимости от типа проекта
+  switch (project.type) {
+    case EProjectType.KANBAN: {
+      const kanbanBoard = await Board.create(
+        {
+          name: `${project.name} Kanban Board`,
+          type: EBoardType.KANBAN,
+          projectId: project.id,
+        },
+        { transaction },
+      );
+
+      await createDefaultKanbanWorkflow(kanbanBoard.id, transaction);
+      break;
+    }
+
+    case EProjectType.SCRUM: {
+      const scrumBoard = await Board.create(
+        {
+          name: `${project.name} Scrum Board`,
+          type: EBoardType.SCRUM,
+          projectId: project.id,
+        },
+        { transaction },
+      );
+
+      await createDefaultScrumWorkflow(scrumBoard.id, transaction);
+      break;
+    }
+
+    default:
+      throw new Error(`Unsupported project type: ${project.type}`);
   }
 });

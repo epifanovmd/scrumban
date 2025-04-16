@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   NotFoundException,
@@ -7,7 +8,6 @@ import { inject, injectable } from "inversify";
 import { Includeable, Op, Transaction, WhereOptions } from "sequelize";
 
 import { sequelize } from "../../db";
-import { BoardService } from "../board";
 import { Board, EBoardType } from "../board/board.model";
 import { IssueOrder } from "../issue-order/issue-order.model";
 import { IssueType } from "../issue-type/issue-type.model";
@@ -18,7 +18,6 @@ import { ESprintStatus, Sprint } from "../sprint/sprint.model";
 import { Status } from "../status/status.model";
 import { UserService } from "../user";
 import { User } from "../user/user.model";
-import { WorkflowService } from "../workflow";
 import { Workflow, WorkflowStatus } from "../workflow/workflow.model";
 import { IIssueCreateRequest, IIssueUpdateRequest, Issue } from "./issue.model";
 
@@ -27,8 +26,6 @@ export class IssueService {
   constructor(
     @inject(UserService) private _userService: UserService,
     @inject(ProjectService) private _projectService: ProjectService,
-    @inject(BoardService) private _boardService: BoardService,
-    @inject(WorkflowService) private _workflowService: WorkflowService,
   ) {}
 
   async getIssues(
@@ -76,7 +73,8 @@ export class IssueService {
             transaction: t,
           });
 
-          if (!initialStatus) throw new Error("Initial status not configured");
+          if (!initialStatus)
+            throw new BadRequestException("Initial status not configured");
           statusId = initialStatus.id;
         }
 
@@ -247,12 +245,30 @@ export class IssueService {
 
   static get include(): Includeable[] {
     return [
-      { model: IssueType, as: "type" },
-      { model: Priority, as: "priority" },
-      { model: Status, as: "status" },
-      { model: Project, as: "project" },
-      { model: User, as: "assignee" },
-      { model: User, as: "reporter" },
+      {
+        model: IssueType,
+        as: "type",
+      },
+      {
+        model: Priority,
+        as: "priority",
+      },
+      {
+        model: Status,
+        as: "status",
+      },
+      {
+        model: Project,
+        as: "project",
+      },
+      {
+        model: User,
+        as: "assignee",
+      },
+      {
+        model: User,
+        as: "reporter",
+      },
     ];
   }
 }

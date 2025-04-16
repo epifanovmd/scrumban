@@ -16,6 +16,10 @@ import { IIssueDto } from "../issue/issue.model";
 import { IProjectDto, Project } from "../project/project.model";
 import { ISprintDto, Sprint } from "../sprint/sprint.model";
 import { IStatusDto } from "../status/status.model";
+import {
+  createDefaultKanbanWorkflow,
+  createDefaultScrumWorkflow,
+} from "../workflow/workflow.utils";
 
 export enum EBoardType {
   SCRUM = "scrum",
@@ -150,3 +154,11 @@ Board.init(
     ],
   },
 );
+
+Board.afterCreate(async (board, options) => {
+  if (board.type === EBoardType.KANBAN) {
+    await createDefaultKanbanWorkflow(board.id, options.transaction);
+  } else if (board.type === EBoardType.SCRUM) {
+    await createDefaultScrumWorkflow(board.id, options.transaction);
+  }
+});

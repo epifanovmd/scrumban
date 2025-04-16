@@ -40,7 +40,7 @@ export interface IWorkflowUpdateRequest
 export type WorkflowModel = InferAttributes<Workflow>;
 export type WorkflowCreateModel = InferCreationAttributes<
   Workflow,
-  { omit: "id" | "isDefault" | "createdAt" | "updatedAt" }
+  { omit: "id" | "createdAt" | "updatedAt" }
 >;
 
 export class Workflow extends Model<WorkflowModel, WorkflowCreateModel> {

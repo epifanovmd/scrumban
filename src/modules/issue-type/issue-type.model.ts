@@ -11,17 +11,9 @@ import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
 import { Issue } from "../issue/issue.model";
 
-export enum EIssueType {
-  STORY = "story",
-  TASK = "task",
-  BUG = "bug",
-  EPIC = "epic",
-  SUBTASK = "subtask",
-}
-
 export interface IIssueTypeDto {
   id: string;
-  name: EIssueType;
+  name: string;
   icon: string;
   description?: string;
   createdAt: Date;
@@ -31,7 +23,7 @@ export interface IIssueTypeDto {
 export interface IIssueTypeListDto extends ListResponse<IIssueTypeDto[]> {}
 
 export interface IIssueTypeCreateRequest {
-  name: EIssueType;
+  name: string;
   icon: string;
   description?: string;
 }
@@ -47,7 +39,7 @@ export type IssueTypeCreateModel = InferCreationAttributes<
 
 export class IssueType extends Model<IssueTypeModel, IssueTypeCreateModel> {
   declare id: string;
-  declare name: EIssueType;
+  declare name: string;
   declare icon: string;
   declare description?: string;
 
@@ -80,9 +72,9 @@ IssueType.init(
       allowNull: false,
     },
     name: {
-      type: DataTypes.ENUM(...Object.values(EIssueType)),
+      type: DataTypes.STRING(50),
       allowNull: false,
-      // unique: true,
+      unique: true,
     },
     icon: {
       type: DataTypes.STRING(50),
@@ -104,3 +96,41 @@ IssueType.init(
     },
   },
 );
+
+IssueType.afterSync(async () => {
+  const count = await IssueType.count();
+
+  try {
+    if (count === 0) {
+      await IssueType.bulkCreate([
+        {
+          name: "Story",
+          icon: "book",
+          description: "User story or feature",
+        },
+        {
+          name: "Task",
+          icon: "check-square",
+          description: "General task",
+        },
+        {
+          name: "Bug",
+          icon: "bug",
+          description: "Something isn't working",
+        },
+        {
+          name: "Epic",
+          icon: "rocket",
+          description: "Big feature containing many stories",
+        },
+        {
+          name: "Subtask",
+          icon: "list-check",
+          description: "Part of a larger task",
+        },
+      ]);
+    }
+  } catch (error) {
+    console.error("Failed to initialize default issue types:", error);
+  }
+});

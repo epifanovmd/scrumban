@@ -690,23 +690,13 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"EIssueType": {
-				"enum": [
-					"story",
-					"task",
-					"bug",
-					"epic",
-					"subtask"
-				],
-				"type": "string"
-			},
 			"IIssueTypeDto": {
 				"properties": {
 					"id": {
 						"type": "string"
 					},
 					"name": {
-						"$ref": "#/components/schemas/EIssueType"
+						"type": "string"
 					},
 					"icon": {
 						"type": "string"
@@ -1358,7 +1348,6 @@
 					"typeId",
 					"priorityId",
 					"projectId",
-					"boardId",
 					"reporterId"
 				],
 				"type": "object",
@@ -1720,7 +1709,7 @@
 			"IIssueTypeCreateRequest": {
 				"properties": {
 					"name": {
-						"$ref": "#/components/schemas/EIssueType"
+						"type": "string"
 					},
 					"icon": {
 						"type": "string"
@@ -1739,7 +1728,7 @@
 			"IIssueTypeUpdateRequest": {
 				"properties": {
 					"name": {
-						"$ref": "#/components/schemas/EIssueType"
+						"type": "string"
 					},
 					"icon": {
 						"type": "string"

@@ -48,6 +48,7 @@ export class Status extends Model<StatusModel, StatusCreateModel> {
   declare color: string;
   declare isInitial: boolean;
   declare isFinal: boolean;
+  declare isSystem?: boolean;
 
   // Timestamps
   declare readonly createdAt: Date;
@@ -106,6 +107,11 @@ Status.init(
       allowNull: false,
       defaultValue: false,
     },
+    isSystem: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },
@@ -122,26 +128,33 @@ Status.init(
 Status.afterSync(async () => {
   const count = await Status.count();
 
-  if (count === 0) {
-    await Status.bulkCreate([
-      {
-        name: "Open",
-        isInitial: true,
-        color: "#4CAF50",
-        isFinal: false,
-      },
-      {
-        name: "In Progress",
-        isInitial: false,
-        color: "#2196F3",
-        isFinal: false,
-      },
-      {
-        name: "Done",
-        isInitial: false,
-        isFinal: true,
-        color: "#9E9E9E",
-      },
-    ]);
+  try {
+    if (count === 0) {
+      await Status.bulkCreate([
+        {
+          name: "Open",
+          color: "#4CAF50",
+          isSystem: true,
+          isInitial: true,
+          isFinal: false,
+        },
+        {
+          name: "In Progress",
+          color: "#2196F3",
+          isSystem: true,
+          isInitial: false,
+          isFinal: false,
+        },
+        {
+          name: "Done",
+          color: "#9E9E9E",
+          isSystem: true,
+          isInitial: false,
+          isFinal: true,
+        },
+      ]);
+    }
+  } catch (error) {
+    console.error("Failed to initialize default statuses:", error);
   }
 });

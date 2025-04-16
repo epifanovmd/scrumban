@@ -54,7 +54,7 @@ export class WorkflowService {
   async createWorkflow(data: IWorkflowCreateRequest) {
     await this._boardService.getBoardById(data.boardId);
 
-    return Workflow.create(data);
+    return Workflow.create({ ...data, isDefault: !!data.isDefault });
   }
 
   async updateWorkflow(id: string, data: IWorkflowUpdateRequest) {

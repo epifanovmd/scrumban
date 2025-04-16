@@ -27,7 +27,7 @@ export interface IIssueCreateRequest {
   priorityId: string;
   statusId?: string;
   projectId: string;
-  boardId: string;
+  boardId?: string;
   sprintId?: string;
   assigneeId?: string;
   reporterId: string;
@@ -85,7 +85,7 @@ export class Issue extends Model<IssueModel, IssueCreateModel> {
   declare priorityId: string;
   declare statusId: string;
   declare projectId: string;
-  declare boardId: string;
+  declare boardId?: string;
   declare sprintId?: string;
   declare assigneeId?: string;
   declare reporterId: string;
@@ -204,7 +204,7 @@ Issue.init(
     },
     boardId: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true, // Разрешаем NULL
       references: {
         model: "boards",
         key: "id",
@@ -282,17 +282,13 @@ Issue.init(
 );
 
 Issue.beforeValidate(async (issue, options) => {
-  console.log("beforeCreate");
   if (!issue.key) {
-    const project = await Project.findByPk(issue.projectId, {
-      // transaction: options.transaction,
-    });
+    const project = await Project.findByPk(issue.projectId);
 
     if (project) {
       const lastIssue = await Issue.findOne({
         where: { projectId: issue.projectId },
         order: [["createdAt", "DESC"]],
-        // transaction: options.transaction,
       });
 
       let seqNumber = 1;

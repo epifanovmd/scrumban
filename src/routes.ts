@@ -346,16 +346,11 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "EIssueType": {
-        "dataType": "refEnum",
-        "enums": ["story","task","bug","epic","subtask"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IIssueTypeDto": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
-            "name": {"ref":"EIssueType","required":true},
+            "name": {"dataType":"string","required":true},
             "icon": {"dataType":"string","required":true},
             "description": {"dataType":"string"},
             "createdAt": {"dataType":"datetime","required":true},
@@ -611,7 +606,7 @@ const models: TsoaRoute.Models = {
             "priorityId": {"dataType":"string","required":true},
             "statusId": {"dataType":"string"},
             "projectId": {"dataType":"string","required":true},
-            "boardId": {"dataType":"string","required":true},
+            "boardId": {"dataType":"string"},
             "sprintId": {"dataType":"string"},
             "assigneeId": {"dataType":"string"},
             "reporterId": {"dataType":"string","required":true},
@@ -782,7 +777,7 @@ const models: TsoaRoute.Models = {
     "IIssueTypeCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "name": {"ref":"EIssueType","required":true},
+            "name": {"dataType":"string","required":true},
             "icon": {"dataType":"string","required":true},
             "description": {"dataType":"string"},
         },
@@ -792,7 +787,7 @@ const models: TsoaRoute.Models = {
     "IIssueTypeUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "name": {"ref":"EIssueType"},
+            "name": {"dataType":"string"},
             "icon": {"dataType":"string"},
             "description": {"dataType":"string"},
         },
