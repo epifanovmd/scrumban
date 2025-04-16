@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Patch,
+  Path,
   Post,
   Query,
   Route,
@@ -34,104 +35,123 @@ export class SprintPlanningController extends Controller {
 
   @Security("jwt")
   @Get("list")
-  getPlannings(
+  async getPlannings(
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
     @Query("sprintId") sprintId?: string,
   ): Promise<ISprintPlanningListDto> {
-    return this._sprintPlanningService
-      .getPlannings(offset, limit, sprintId ? { sprintId } : undefined)
-      .then(result => ({
-        offset,
-        limit,
-        count: result.length,
-        data: result.map(res => res.toJSON()),
-      }));
+    const result = await this._sprintPlanningService.getPlannings(
+      offset,
+      limit,
+      sprintId ? { sprintId } : undefined,
+    );
+
+    return {
+      offset: offset || 0,
+      limit: limit || result.length,
+      count: result.length,
+      data: result.map(res => res.toJSON()),
+    };
   }
 
   @Security("jwt")
   @Get("{id}")
-  getPlanningById(id: string): Promise<ISprintPlanningDto> {
-    return this._sprintPlanningService
-      .getPlanningById(id)
-      .then(res => res.toJSON());
+  async getPlanningById(id: string): Promise<ISprintPlanningDto> {
+    const planning = await this._sprintPlanningService.getPlanningById(id);
+
+    return planning.toJSON();
   }
 
   @Security("jwt")
   @Post()
-  createPlanning(
+  async createPlanning(
     @Body() body: ISprintPlanningCreateRequest,
   ): Promise<ISprintPlanningDto> {
-    return this._sprintPlanningService
-      .createPlanning(body)
-      .then(res => res.toJSON());
+    const planning = await this._sprintPlanningService.createPlanning(body);
+
+    return planning.toJSON();
   }
 
   @Security("jwt")
   @Patch("{id}")
-  updatePlanning(
+  async updatePlanning(
     id: string,
     @Body() body: ISprintPlanningUpdateRequest,
   ): Promise<ISprintPlanningDto> {
-    return this._sprintPlanningService
-      .updatePlanning(id, body)
-      .then(res => res.toJSON());
+    const planning = await this._sprintPlanningService.updatePlanning(id, body);
+
+    return planning.toJSON();
   }
 
   @Security("jwt", ["role:admin"])
   @Delete("{id}")
-  deletePlanning(id: string): Promise<string> {
+  async deletePlanning(id: string): Promise<string> {
     return this._sprintPlanningService.deletePlanning(id);
   }
 
   @Security("jwt")
   @Post("{planningId}/participants/{userId}")
-  addParticipant(
-    planningId: string,
-    userId: string,
+  async addParticipant(
+    @Path("planningId") planningId: string,
+    @Path("userId") userId: string,
     @Query("isScrumMaster") isScrumMaster: boolean = false,
     @Query("isProductOwner") isProductOwner: boolean = false,
   ): Promise<ISprintPlanningDto> {
-    return this._sprintPlanningService
-      .addParticipant(planningId, userId, {
+    const planning = await this._sprintPlanningService.addParticipant(
+      planningId,
+      userId,
+      {
         isScrumMaster,
         isProductOwner,
-      })
-      .then(res => res.toJSON());
+      },
+    );
+
+    return planning.toJSON();
   }
 
   @Security("jwt")
   @Delete("{planningId}/participants/{userId}")
-  removeParticipant(
-    planningId: string,
-    userId: string,
+  async removeParticipant(
+    @Path("planningId") planningId: string,
+    @Path("userId") userId: string,
   ): Promise<ISprintPlanningDto> {
-    return this._sprintPlanningService
-      .removeParticipant(planningId, userId)
-      .then(res => res.toJSON());
+    const planning = await this._sprintPlanningService.removeParticipant(
+      planningId,
+      userId,
+    );
+
+    return planning.toJSON();
   }
 
   @Security("jwt")
   @Post("{planningId}/items/{issueId}")
-  addPlanningItem(
-    planningId: string,
-    issueId: string,
+  async addPlanningItem(
+    @Path("planningId") planningId: string,
+    @Path("issueId") issueId: string,
     @Query("suggestedById") suggestedById: string,
     @Query("estimate") estimate?: number,
   ): Promise<ISprintPlanningDto> {
-    return this._sprintPlanningService
-      .addPlanningItem(planningId, issueId, suggestedById, estimate)
-      .then(res => res.toJSON());
+    const planning = await this._sprintPlanningService.addPlanningItem(
+      planningId,
+      issueId,
+      suggestedById,
+      estimate,
+    );
+
+    return planning.toJSON();
   }
 
   @Security("jwt")
-  @Post("{planningId}/items/{itemId}/status/{status}")
-  updatePlanningItemStatus(
-    itemId: string,
+  @Post("{planningId}/status/{status}")
+  async updatePlanningItemStatus(
+    @Path("planningId") planningId: string,
     @Query("status") status: EPlanningItemStatus,
   ): Promise<ISprintPlanningDto> {
-    return this._sprintPlanningService
-      .updatePlanningItemStatus(itemId, status)
-      .then(res => res.toJSON());
+    const planning = await this._sprintPlanningService.updatePlanningItemStatus(
+      planningId,
+      status,
+    );
+
+    return planning.toJSON();
   }
 }

@@ -4,7 +4,6 @@ import { Includeable, Transaction, WhereOptions } from "sequelize";
 
 import { iocContainer } from "../../app.module";
 import { sequelize } from "../../db";
-import { ListResponse } from "../../dto/ListResponse";
 import { AuditFieldChange } from "../audit-field-change/audit-field-change.model";
 import { AuditFieldChangeService } from "../audit-field-change/audit-field-change.service";
 import { Board } from "../board/board.model";
@@ -13,8 +12,12 @@ import { Project } from "../project/project.model";
 import { Sprint } from "../sprint/sprint.model";
 import { Team } from "../team/team.model";
 import { User } from "../user/user.model";
-import { AuditLog, EAuditAction, EAuditTargetType } from "./audit-log.model";
-import { IAuditLogDto } from "./audit-log.model";
+import {
+  AuditLog,
+  EAuditAction,
+  EAuditTargetType,
+  IAuditLogDto,
+} from "./audit-log.model";
 
 export interface IAuditLogCreateRequest {
   action: EAuditAction;
@@ -137,7 +140,10 @@ export class AuditLogService {
     pageSize: number = 20,
   ) {
     const { count, rows } = await AuditLog.findAndCountAll({
-      where: { targetType, targetId },
+      where: {
+        targetType,
+        targetId,
+      },
       order: [["createdAt", "DESC"]],
       limit: pageSize,
       offset: (page - 1) * pageSize,
@@ -173,8 +179,14 @@ export class AuditLogService {
 
   static get include(): Includeable[] {
     return [
-      { model: User, as: "user" },
-      { model: AuditFieldChange, as: "fieldChanges" },
+      {
+        model: User,
+        as: "user",
+      },
+      {
+        model: AuditFieldChange,
+        as: "fieldChanges",
+      },
     ];
   }
 }

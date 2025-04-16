@@ -6471,7 +6471,7 @@
 				]
 			}
 		},
-		"/api/sprint-planning/{planningId}/items/{itemId}/status/{status}": {
+		"/api/sprint-planning/{planningId}/status/{status}": {
 			"post": {
 				"operationId": "UpdatePlanningItemStatus",
 				"responses": {
@@ -6497,7 +6497,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "itemId",
+						"name": "planningId",
 						"required": true,
 						"schema": {
 							"type": "string"
