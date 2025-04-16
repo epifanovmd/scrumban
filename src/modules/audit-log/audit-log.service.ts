@@ -187,89 +187,89 @@ export async function setupAuditHooks(
     const auditService = iocContainer.get<AuditLogService>(AuditLogService);
     const context = options.context || {};
 
-    await auditService.logAction(
-      {
-        action: EAuditAction.CREATE,
-        targetType,
-        targetId: instance.id,
-        userId:
-          context.userId ||
-          instance.reporterId ||
-          instance.userId ||
-          "a1ad143e-c9a8-4e0d-8273-3165e1d1ded7",
-        newData: instance.get({ plain: true }),
-        ipAddress: context.ipAddress,
-        userAgent: context.userAgent,
-      },
-      undefined,
-      options.transaction,
-    );
+    const userId = context.userId || instance.reporterId || instance.userId;
+
+    if (userId) {
+      await auditService.logAction(
+        {
+          action: EAuditAction.CREATE,
+          targetType,
+          targetId: instance.id,
+          userId,
+          newData: instance.get({ plain: true }),
+          ipAddress: context.ipAddress,
+          userAgent: context.userAgent,
+        },
+        undefined,
+        options.transaction,
+      );
+    }
   });
 
   model.addHook("afterUpdate", async (instance: any, options: any) => {
-    const auditService = iocContainer.get<AuditLogService>(AuditLogService);
     const context = options.context || {};
-    const previousData = instance.previous();
-    const newData = instance.get({ plain: true });
+    const userId = context.userId || instance.reporterId || instance.userId;
 
-    const changedFields = Object.keys(newData)
-      .filter(
-        key =>
-          JSON.stringify(previousData[key]) !== JSON.stringify(newData[key]),
-      )
-      .map(fieldName => ({
-        fieldName,
-        oldValue:
-          previousData[fieldName] !== undefined
-            ? JSON.stringify(previousData[fieldName])
-            : undefined,
-        newValue:
-          newData[fieldName] !== undefined
-            ? JSON.stringify(newData[fieldName])
-            : undefined,
-      }));
+    if (userId) {
+      const auditService = iocContainer.get<AuditLogService>(AuditLogService);
+      const previousData = instance.previous();
+      const newData = instance.get({ plain: true });
 
-    await auditService.logAction(
-      {
-        action: EAuditAction.UPDATE,
-        targetType,
-        targetId: instance.id,
-        userId:
-          context.userId ||
-          instance.reporterId ||
-          instance.userId ||
-          "a1ad143e-c9a8-4e0d-8273-3165e1d1ded7",
-        previousData,
-        newData,
-        ipAddress: context.ipAddress,
-        userAgent: context.userAgent,
-      },
-      changedFields,
-      options.transaction,
-    );
+      const changedFields = Object.keys(newData)
+        .filter(
+          key =>
+            JSON.stringify(previousData[key]) !== JSON.stringify(newData[key]),
+        )
+        .map(fieldName => ({
+          fieldName,
+          oldValue:
+            previousData[fieldName] !== undefined
+              ? JSON.stringify(previousData[fieldName])
+              : undefined,
+          newValue:
+            newData[fieldName] !== undefined
+              ? JSON.stringify(newData[fieldName])
+              : undefined,
+        }));
+
+      await auditService.logAction(
+        {
+          action: EAuditAction.UPDATE,
+          targetType,
+          targetId: instance.id,
+          userId,
+          previousData,
+          newData,
+          ipAddress: context.ipAddress,
+          userAgent: context.userAgent,
+        },
+        changedFields,
+        options.transaction,
+      );
+    }
   });
 
   model.addHook("afterDestroy", async (instance: any, options: any) => {
-    const auditService = iocContainer.get<AuditLogService>(AuditLogService);
     const context = options.context || {};
+    const userId = context.userId || instance.reporterId || instance.userId;
 
-    await auditService.logAction(
-      {
-        action: EAuditAction.DELETE,
-        targetType,
-        targetId: instance.id,
-        userId:
-          context.userId ||
-          instance.reporterId ||
-          instance.userId ||
-          "a1ad143e-c9a8-4e0d-8273-3165e1d1ded7",
-        previousData: instance.get({ plain: true }),
-        ipAddress: context.ipAddress,
-        userAgent: context.userAgent,
-      },
-      undefined,
-      options.transaction,
-    );
+    if (userId) {
+      const auditService = iocContainer.get<AuditLogService>(AuditLogService);
+
+      await auditService.logAction(
+        {
+          action: EAuditAction.DELETE,
+          targetType,
+          targetId: instance.id,
+          userId,
+          previousData: instance.get({ plain: true }),
+          ipAddress: context.ipAddress,
+          userAgent: context.userAgent,
+        },
+        undefined,
+        options.transaction,
+      );
+    }
   });
 }
 
