@@ -71,16 +71,16 @@ export class Backlog extends Model<BacklogModel, BacklogCreateModel> {
   // Methods
   declare getIssues: HasManyGetAssociationsMixin<Issue>;
 
-  toDTO(): IBacklogDto {
+  toJSON(): IBacklogDto {
     return {
       id: this.id,
       name: this.name,
       isDefault: this.isDefault,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      project: this.project?.toDTO(),
-      board: this.board?.toDTO(),
-      issues: this.issues?.map(item => item.toDTO()),
+      project: this.project?.toJSON(),
+      board: this.board?.toJSON(),
+      issues: this.issues?.map(item => item.toJSON()),
     };
   }
 }

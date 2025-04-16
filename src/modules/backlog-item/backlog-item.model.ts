@@ -52,14 +52,14 @@ export class BacklogItem extends Model<
   declare getBacklog: BelongsToGetAssociationMixin<Backlog>;
   declare getIssue: BelongsToGetAssociationMixin<Issue>;
 
-  toDTO(): IBacklogItemDto {
+  toJSON(): IBacklogItemDto {
     return {
       id: this.id,
       order: this.order,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      backlog: this.backlog?.toDTO(),
-      issue: this.issue?.toDTO(),
+      backlog: this.backlog?.toJSON(),
+      issue: this.issue?.toJSON(),
     };
   }
 }

@@ -65,7 +65,7 @@ export class Workflow extends Model<WorkflowModel, WorkflowCreateModel> {
   // Methods
   declare getStatuses: HasManyGetAssociationsMixin<Status>;
 
-  toDTO(): IWorkflowDto {
+  toJSON(): IWorkflowDto {
     return {
       id: this.id,
       name: this.name,
@@ -73,8 +73,8 @@ export class Workflow extends Model<WorkflowModel, WorkflowCreateModel> {
       isDefault: this.isDefault,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      board: this.board?.toDTO(),
-      statuses: this.statuses?.map(item => item.toDTO()),
+      board: this.board?.toJSON(),
+      statuses: this.statuses?.map(item => item.toJSON()),
     };
   }
 }

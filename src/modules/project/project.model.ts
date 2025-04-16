@@ -90,7 +90,7 @@ export class Project extends Model<ProjectModel, ProjectCreateModel> {
   declare hasTeam: BelongsToManyHasAssociationMixin<Team, string>;
   declare countTeams: BelongsToManyCountAssociationsMixin;
 
-  toDTO(): IProjectDto {
+  toJSON(): IProjectDto {
     return {
       id: this.id,
       name: this.name,
@@ -99,7 +99,7 @@ export class Project extends Model<ProjectModel, ProjectCreateModel> {
       visibility: this.visibility,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      teams: (this.teams ?? [])?.map(item => item.toDTO()),
+      teams: (this.teams ?? [])?.map(item => item.toJSON()),
     };
   }
 }

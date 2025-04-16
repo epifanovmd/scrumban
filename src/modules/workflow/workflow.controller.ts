@@ -46,20 +46,20 @@ export class WorkflowController extends Controller {
         offset,
         limit,
         count: result.length,
-        data: result.map(res => res.toDTO()),
+        data: result.map(res => res.toJSON()),
       }));
   }
 
   @Security("jwt")
   @Get("{id}")
   getWorkflowById(id: string): Promise<IWorkflowDto> {
-    return this._workflowService.getWorkflowById(id).then(res => res.toDTO());
+    return this._workflowService.getWorkflowById(id).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
   @Post()
   createWorkflow(@Body() body: IWorkflowCreateRequest): Promise<IWorkflowDto> {
-    return this._workflowService.createWorkflow(body).then(res => res.toDTO());
+    return this._workflowService.createWorkflow(body).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -70,7 +70,7 @@ export class WorkflowController extends Controller {
   ): Promise<IWorkflowDto> {
     return this._workflowService
       .updateWorkflow(id, body)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -97,7 +97,7 @@ export class WorkflowController extends Controller {
 
     return this._workflowService
       .getWorkflowById(workflowId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -132,7 +132,7 @@ export class WorkflowController extends Controller {
   ): Promise<IWorkflowDto> {
     return this._workflowService
       .addStatusToWorkflow(workflowId, statusId, order)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -143,6 +143,6 @@ export class WorkflowController extends Controller {
   ): Promise<IWorkflowDto> {
     return this._workflowService
       .removeStatusFromWorkflow(workflowId, statusId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 }

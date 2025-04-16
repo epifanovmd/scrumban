@@ -8,7 +8,6 @@ import { Comment } from "./comment/comment.model";
 import { Files } from "./file/file.model";
 import { Issue } from "./issue/issue.model";
 import { IssueType } from "./issue-type/issue-type.model";
-import { Label } from "./label/label.model";
 import { Otp } from "./otp/otp.model";
 import { Passkeys } from "./passkeys/passkeys.model";
 import { Permission } from "./permission/permission.model";
@@ -122,8 +121,15 @@ Project.hasMany(Backlog, { foreignKey: "projectId" });
 Backlog.belongsTo(Project, { foreignKey: "projectId" });
 
 // Задачи
-Issue.belongsTo(IssueType, { foreignKey: "typeId" });
-IssueType.hasMany(Issue, { foreignKey: "typeId" });
+Issue.belongsTo(IssueType, {
+  foreignKey: "typeId",
+  as: "type", // Используем тот же алиас, что и в запросах
+});
+
+IssueType.hasMany(Issue, {
+  foreignKey: "typeId",
+  as: "issues",
+});
 
 Issue.belongsTo(Priority, { foreignKey: "priorityId" });
 Priority.hasMany(Issue, { foreignKey: "priorityId" });
@@ -148,10 +154,6 @@ User.hasMany(Issue, { as: "reportedIssues", foreignKey: "reporterId" });
 
 Issue.belongsTo(Issue, { as: "parent", foreignKey: "parentId" });
 Issue.hasMany(Issue, { as: "children", foreignKey: "parentId" });
-
-// Метки
-Issue.belongsToMany(Label, { through: "issue_labels" });
-Label.belongsToMany(Issue, { through: "issue_labels" });
 
 // Элементы бэклога
 Backlog.belongsToMany(Issue, { through: BacklogItem, as: "backlogIssues" });
@@ -199,11 +201,11 @@ Workflow.belongsTo(Board, { foreignKey: "boardId" });
 
 Workflow.belongsToMany(Status, {
   through: WorkflowStatus,
-  as: "workflowStatuses",
+  as: "statuses",
 });
 Status.belongsToMany(Workflow, {
   through: WorkflowStatus,
-  as: "statusWorkflows",
+  as: "workflows",
 });
 
 // Комментарии

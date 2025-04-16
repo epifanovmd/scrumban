@@ -60,7 +60,7 @@ export class Status extends Model<StatusModel, StatusCreateModel> {
   // Methods
   declare getIssues: HasManyGetAssociationsMixin<Issue>;
 
-  toDTO(): IStatusDto {
+  toJSON(): IStatusDto {
     return {
       id: this.id,
       name: this.name,

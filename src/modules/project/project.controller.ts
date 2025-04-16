@@ -43,20 +43,20 @@ export class ProjectController extends Controller {
       offset,
       limit,
       count: result.length,
-      data: result.map(res => res.toDTO()),
+      data: result.map(res => res.toJSON()),
     }));
   }
 
   @Security("jwt")
   @Get("{id}")
   getProjectById(id: string): Promise<IProjectDto> {
-    return this._projectService.getProjectById(id).then(res => res.toDTO());
+    return this._projectService.getProjectById(id).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
   @Post()
   createProject(@Body() body: IProjectCreateRequest): Promise<IProjectDto> {
-    return this._projectService.createProject(body).then(res => res.toDTO());
+    return this._projectService.createProject(body).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -67,7 +67,7 @@ export class ProjectController extends Controller {
   ): Promise<IProjectDto> {
     return this._projectService
       .updateProject(id, body)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -81,7 +81,7 @@ export class ProjectController extends Controller {
   setProjectLead(projectId: string, userId: string): Promise<IProjectDto> {
     return this._projectService
       .setProjectLead(projectId, userId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -89,7 +89,7 @@ export class ProjectController extends Controller {
   addTeamToProject(projectId: string, teamId: string): Promise<IProjectDto> {
     return this._projectService
       .addTeamToProject(projectId, teamId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -100,6 +100,6 @@ export class ProjectController extends Controller {
   ): Promise<IProjectDto> {
     return this._projectService
       .removeTeamFromProject(projectId, teamId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 }

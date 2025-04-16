@@ -42,20 +42,20 @@ export class SprintController extends Controller {
         offset,
         limit,
         count: result.length,
-        data: result.map(res => res.toDTO()),
+        data: result.map(res => res.toJSON()),
       }));
   }
 
   @Security("jwt")
   @Get("{id}")
   getSprintById(id: string): Promise<ISprintDto> {
-    return this._sprintService.getSprintById(id).then(res => res.toDTO());
+    return this._sprintService.getSprintById(id).then(res => res.toJSON());
   }
 
   @Security("jwt")
   @Post()
   createSprint(@Body() body: ISprintCreateRequest): Promise<ISprintDto> {
-    return this._sprintService.createSprint(body).then(res => res.toDTO());
+    return this._sprintService.createSprint(body).then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -64,7 +64,7 @@ export class SprintController extends Controller {
     id: string,
     @Body() body: ISprintUpdateRequest,
   ): Promise<ISprintDto> {
-    return this._sprintService.updateSprint(id, body).then(res => res.toDTO());
+    return this._sprintService.updateSprint(id, body).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -76,12 +76,12 @@ export class SprintController extends Controller {
   @Security("jwt")
   @Post("{id}/start")
   startSprint(id: string): Promise<ISprintDto> {
-    return this._sprintService.startSprint(id).then(res => res.toDTO());
+    return this._sprintService.startSprint(id).then(res => res.toJSON());
   }
 
   @Security("jwt")
   @Post("{id}/complete")
   completeSprint(id: string): Promise<ISprintDto> {
-    return this._sprintService.completeSprint(id).then(res => res.toDTO());
+    return this._sprintService.completeSprint(id).then(res => res.toJSON());
   }
 }

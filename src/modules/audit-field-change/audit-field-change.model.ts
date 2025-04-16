@@ -58,7 +58,7 @@ export class AuditFieldChange extends Model<
   declare auditLog?: NonAttribute<AuditLog>;
   declare getAuditLog: BelongsToGetAssociationMixin<AuditLog>;
 
-  toDTO(): IAuditFieldChangeDto {
+  toJSON(): IAuditFieldChangeDto {
     return {
       id: this.id,
       fieldName: this.fieldName,
@@ -66,7 +66,7 @@ export class AuditFieldChange extends Model<
       newValue: this.newValue,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      auditLog: this.auditLog?.toDTO(),
+      auditLog: this.auditLog?.toJSON(),
     };
   }
 }

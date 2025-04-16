@@ -77,7 +77,7 @@ export class Sprint extends Model<SprintModel, SprintCreateModel> {
   // Methods
   declare getIssues: HasManyGetAssociationsMixin<Issue>;
 
-  toDTO(): ISprintDto {
+  toJSON(): ISprintDto {
     return {
       id: this.id,
       name: this.name,
@@ -87,8 +87,8 @@ export class Sprint extends Model<SprintModel, SprintCreateModel> {
       status: this.status,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      board: this.board?.toDTO(),
-      issues: (this.issues ?? []).map(item => item.toDTO()),
+      board: this.board?.toJSON(),
+      issues: (this.issues ?? []).map(item => item.toJSON()),
     };
   }
 }

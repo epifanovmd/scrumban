@@ -42,20 +42,20 @@ export class BoardController extends Controller {
         offset,
         limit,
         count: result.length,
-        data: result.map(res => res.toDTO()),
+        data: result.map(res => res.toJSON()),
       }));
   }
 
   @Security("jwt")
   @Get("{id}")
   getBoardById(id: string): Promise<IBoardDto> {
-    return this._boardService.getBoardById(id).then(res => res.toDTO());
+    return this._boardService.getBoardById(id).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
   @Post()
   createBoard(@Body() body: IBoardCreateRequest): Promise<IBoardDto> {
-    return this._boardService.createBoard(body).then(res => res.toDTO());
+    return this._boardService.createBoard(body).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -64,7 +64,7 @@ export class BoardController extends Controller {
     id: string,
     @Body() body: IBoardUpdateRequest,
   ): Promise<IBoardDto> {
-    return this._boardService.updateBoard(id, body).then(res => res.toDTO());
+    return this._boardService.updateBoard(id, body).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -78,6 +78,6 @@ export class BoardController extends Controller {
   setActiveSprint(boardId: string, sprintId: string): Promise<IBoardDto> {
     return this._boardService
       .setActiveSprint(boardId, sprintId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 }

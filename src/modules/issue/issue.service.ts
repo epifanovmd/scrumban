@@ -40,9 +40,10 @@ export class IssueService {
     });
   }
 
-  async getIssueById(id: string) {
+  async getIssueById(id: string, transaction?: Transaction) {
     const issue = await Issue.findByPk(id, {
       include: IssueService.include,
+      transaction,
     });
 
     if (!issue) throw new NotFoundException("Issue not found");
@@ -57,32 +58,35 @@ export class IssueService {
   }
 
   async createIssue(data: IIssueCreateRequest) {
-    return sequelize.transaction(async (t: Transaction) => {
-      await this._validateIssueDependencies(data, t);
+    return sequelize
+      .transaction(async (t: Transaction) => {
+        await this._validateIssueDependencies(data, t);
 
-      // Получаем начальный статус, если не указан
-      let statusId = data.statusId;
+        // Получаем начальный статус, если не указан
+        let statusId = data.statusId;
 
-      if (!statusId) {
-        const initialStatus = await Status.findOne({
-          where: { isInitial: true },
-          transaction: t,
-        });
+        if (!statusId) {
+          const initialStatus = await Status.findOne({
+            where: { isInitial: true },
+            transaction: t,
+          });
 
-        if (!initialStatus) throw new Error("Initial status not configured");
-        statusId = initialStatus.id;
-      }
+          if (!initialStatus) throw new Error("Initial status not configured");
+          statusId = initialStatus.id;
+        }
 
-      const issue = await Issue.create(
-        {
-          ...data,
-          statusId,
-        },
-        { transaction: t },
-      );
-
-      return this.getIssueById(issue.id);
-    });
+        return await Issue.create(
+          {
+            ...data,
+            statusId,
+          },
+          {
+            transaction: t,
+            hooks: true,
+          },
+        );
+      })
+      .then(issue => this.getIssueById(issue.id));
   }
 
   async updateIssue(id: string, data: IIssueUpdateRequest) {

@@ -54,7 +54,7 @@ export class Role
   // associations
   declare permissions: NonAttribute<Permission[]>;
 
-  toDTO(): IRoleDto {
+  toJSON(): IRoleDto {
     return {
       id: this.id,
       name: this.name,

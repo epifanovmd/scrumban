@@ -73,7 +73,7 @@ export class PlanningItem extends Model<
   declare getIssue: BelongsToGetAssociationMixin<Issue>;
   declare getSuggestedBy: BelongsToGetAssociationMixin<User>;
 
-  toDTO(): IPlanningItemDto {
+  toJSON(): IPlanningItemDto {
     return {
       id: this.id,
       order: this.order,
@@ -81,9 +81,9 @@ export class PlanningItem extends Model<
       estimate: this.estimate,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      planning: this.planning?.toDTO(),
-      issue: this.issue?.toDTO(),
-      suggestedBy: this.suggestedBy?.toDTO(),
+      planning: this.planning?.toJSON(),
+      issue: this.issue?.toJSON(),
+      suggestedBy: this.suggestedBy,
     };
   }
 }

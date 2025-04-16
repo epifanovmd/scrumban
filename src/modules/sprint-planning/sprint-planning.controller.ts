@@ -45,7 +45,7 @@ export class SprintPlanningController extends Controller {
         offset,
         limit,
         count: result.length,
-        data: result.map(res => res.toDTO()),
+        data: result.map(res => res.toJSON()),
       }));
   }
 
@@ -54,7 +54,7 @@ export class SprintPlanningController extends Controller {
   getPlanningById(id: string): Promise<ISprintPlanningDto> {
     return this._sprintPlanningService
       .getPlanningById(id)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -64,7 +64,7 @@ export class SprintPlanningController extends Controller {
   ): Promise<ISprintPlanningDto> {
     return this._sprintPlanningService
       .createPlanning(body)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -75,7 +75,7 @@ export class SprintPlanningController extends Controller {
   ): Promise<ISprintPlanningDto> {
     return this._sprintPlanningService
       .updatePlanning(id, body)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -97,7 +97,7 @@ export class SprintPlanningController extends Controller {
         isScrumMaster,
         isProductOwner,
       })
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -108,7 +108,7 @@ export class SprintPlanningController extends Controller {
   ): Promise<ISprintPlanningDto> {
     return this._sprintPlanningService
       .removeParticipant(planningId, userId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -121,7 +121,7 @@ export class SprintPlanningController extends Controller {
   ): Promise<ISprintPlanningDto> {
     return this._sprintPlanningService
       .addPlanningItem(planningId, issueId, suggestedById, estimate)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -132,6 +132,6 @@ export class SprintPlanningController extends Controller {
   ): Promise<ISprintPlanningDto> {
     return this._sprintPlanningService
       .updatePlanningItemStatus(itemId, status)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 }

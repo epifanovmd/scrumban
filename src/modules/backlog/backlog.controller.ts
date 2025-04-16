@@ -41,20 +41,20 @@ export class BacklogController extends Controller {
         offset,
         limit,
         count: result.length,
-        data: result.map(res => res.toDTO()),
+        data: result.map(res => res.toJSON()),
       }));
   }
 
   @Security("jwt")
   @Get("{id}")
   getBacklogById(id: string): Promise<IBacklogDto> {
-    return this._backlogService.getBacklogById(id).then(res => res.toDTO());
+    return this._backlogService.getBacklogById(id).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
   @Post()
   createBacklog(@Body() body: IBacklogCreateRequest): Promise<IBacklogDto> {
-    return this._backlogService.createBacklog(body).then(res => res.toDTO());
+    return this._backlogService.createBacklog(body).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -65,7 +65,7 @@ export class BacklogController extends Controller {
   ): Promise<IBacklogDto> {
     return this._backlogService
       .updateBacklog(id, body)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -83,7 +83,7 @@ export class BacklogController extends Controller {
   ): Promise<IBacklogDto> {
     return this._backlogService
       .addIssueToBacklog(backlogId, issueId, order)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -94,6 +94,6 @@ export class BacklogController extends Controller {
   ): Promise<IBacklogDto> {
     return this._backlogService
       .removeIssueFromBacklog(backlogId, issueId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 }

@@ -74,7 +74,7 @@ export class Team extends Model<TeamModel, TeamCreateModel> {
   declare addProjects: BelongsToManyAddAssociationsMixin<Project, string>;
   declare removeProjects: BelongsToManyRemoveAssociationsMixin<Project, string>;
 
-  toDTO(): ITeamDto {
+  toJSON(): ITeamDto {
     return {
       id: this.id,
       name: this.name,
@@ -83,7 +83,7 @@ export class Team extends Model<TeamModel, TeamCreateModel> {
       updatedAt: this.updatedAt,
       members: this.members?.map(item => ({
         id: item.id,
-        user: item.user?.toDTO(),
+        user: item.user,
         role: item.role,
       })),
     };
@@ -135,10 +135,10 @@ export class TeamMember extends Model {
   declare getUser: BelongsToGetAssociationMixin<User>;
   declare getTeam: BelongsToGetAssociationMixin<Team>;
 
-  toDTO(): ITeamMemberDto {
+  toJSON(): ITeamMemberDto {
     return {
       id: this.id,
-      user: this.user?.toDTO(),
+      user: this.user,
       role: this.role,
     };
   }

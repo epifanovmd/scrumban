@@ -89,7 +89,7 @@ export class SprintPlanning extends Model<
   // Methods
   declare getParticipants: HasManyGetAssociationsMixin<User>;
 
-  toDTO(): ISprintPlanningDto {
+  toJSON(): ISprintPlanningDto {
     return {
       id: this.id,
       name: this.name,
@@ -99,8 +99,8 @@ export class SprintPlanning extends Model<
       actualVelocity: this.actualVelocity,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      sprint: this.sprint?.toDTO(),
-      participants: (this.participants ?? []).map(item => item.toDTO()),
+      sprint: this.sprint?.toJSON(),
+      participants: this.participants ?? [],
     };
   }
 }

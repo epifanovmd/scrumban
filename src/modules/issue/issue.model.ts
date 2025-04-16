@@ -13,7 +13,6 @@ import { ListResponse } from "../../dto/ListResponse";
 import { Board, IBoardDto } from "../board/board.model";
 import { Comment, ICommentDto } from "../comment/comment.model";
 import { IIssueTypeDto, IssueType } from "../issue-type/issue-type.model";
-import { ILabelDto, Label } from "../label/label.model";
 import { IPriorityDto, Priority } from "../priority/priority.model";
 import { IProjectDto, Project } from "../project/project.model";
 import { ISprintDto, Sprint } from "../sprint/sprint.model";
@@ -34,7 +33,6 @@ export interface IIssueCreateRequest {
   reporterId: string;
   parentId?: string;
   estimate?: number;
-  labels?: string[];
 }
 
 export interface IIssueUpdateRequest extends Partial<IIssueCreateRequest> {
@@ -59,7 +57,6 @@ export interface IIssueDto {
   reporter?: IUserDto;
   parent?: IIssueDto;
   comments?: ICommentDto[];
-  labels?: ILabelDto[];
 }
 
 export interface IIssueListDto extends ListResponse<IIssueDto[]> {}
@@ -104,7 +101,6 @@ export class Issue extends Model<IssueModel, IssueCreateModel> {
   declare parent?: NonAttribute<Issue>;
   declare children?: NonAttribute<Issue[]>;
   declare comments?: NonAttribute<Comment[]>;
-  declare labels?: NonAttribute<Label[]>;
 
   // Methods
   declare getType: BelongsToGetAssociationMixin<IssueType>;
@@ -118,9 +114,8 @@ export class Issue extends Model<IssueModel, IssueCreateModel> {
   declare getParent: BelongsToGetAssociationMixin<Issue>;
   declare getChildren: HasManyGetAssociationsMixin<Issue>;
   declare getComments: HasManyGetAssociationsMixin<Comment>;
-  declare getLabels: HasManyGetAssociationsMixin<Label>;
 
-  toDTO(): IIssueDto {
+  toJSON(): IIssueDto {
     return {
       id: this.id,
       key: this.key,
@@ -129,17 +124,16 @@ export class Issue extends Model<IssueModel, IssueCreateModel> {
       estimate: this.estimate,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      type: this.type?.toDTO(),
-      priority: this.priority?.toDTO(),
-      status: this.status?.toDTO(),
-      project: this.project?.toDTO(),
-      board: this.board?.toDTO(),
-      sprint: this.sprint?.toDTO(),
-      assignee: this.assignee?.toDTO(),
-      reporter: this.reporter?.toDTO(),
-      parent: this.parent?.toDTO(),
-      comments: (this.comments ?? []).map(item => item.toDTO()),
-      labels: (this.labels ?? []).map(item => item.toDTO()),
+      type: this.type?.toJSON(),
+      priority: this.priority?.toJSON(),
+      status: this.status?.toJSON(),
+      project: this.project?.toJSON(),
+      board: this.board?.toJSON(),
+      sprint: this.sprint?.toJSON(),
+      assignee: this.assignee,
+      reporter: this.reporter,
+      parent: this.parent?.toJSON(),
+      comments: (this.comments ?? []).map(item => item.toJSON()),
     };
   }
 }
@@ -281,14 +275,18 @@ Issue.init(
   },
 );
 
-Issue.beforeCreate(async (issue, options) => {
+Issue.beforeValidate(async (issue, options) => {
+  console.log("beforeCreate");
   if (!issue.key) {
-    const project = await Project.findByPk(issue.projectId);
+    const project = await Project.findByPk(issue.projectId, {
+      // transaction: options.transaction,
+    });
 
     if (project) {
       const lastIssue = await Issue.findOne({
         where: { projectId: issue.projectId },
         order: [["createdAt", "DESC"]],
+        // transaction: options.transaction,
       });
 
       let seqNumber = 1;

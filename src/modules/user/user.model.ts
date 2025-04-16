@@ -41,7 +41,7 @@ export interface IUserDto {
   challenge?: string;
   createdAt: Date;
   updatedAt: Date;
-  role: IRoleDto;
+  role?: IRoleDto;
 }
 
 export interface IUserListDto extends ListResponse<IUserDto[]> {}
@@ -82,14 +82,14 @@ export class User
   declare getBiometrics: HasManyGetAssociationsMixin<Biometric>;
 
   // associations
-  declare role: NonAttribute<Role>;
-  declare biometrics: NonAttribute<Biometric[]>;
+  declare role?: NonAttribute<Role>;
+  declare biometrics?: NonAttribute<Biometric[]>;
 
   // Связь с профилем
   declare getProfile: HasOneGetAssociationMixin<Profile>;
   declare setProfile: HasOneSetAssociationMixin<Profile, string>;
 
-  toDTO(): IUserDto {
+  toJSON(): IUserDto {
     return {
       id: this.id,
       email: this.email,
@@ -98,7 +98,7 @@ export class User
       challenge: this.challenge,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      role: this.role.toDTO(),
+      role: this.role,
     };
   }
 }

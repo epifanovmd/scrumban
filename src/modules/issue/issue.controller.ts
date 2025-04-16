@@ -42,20 +42,20 @@ export class IssueController extends Controller {
         offset,
         limit,
         count: result.length,
-        data: result.map(res => res.toDTO()),
+        data: result.map(res => res.toJSON()),
       }));
   }
 
   @Security("jwt")
   @Get("{id}")
   getIssueById(id: string): Promise<IIssueDto> {
-    return this._issueService.getIssueById(id).then(res => res.toDTO());
+    return this._issueService.getIssueById(id).then(res => res.toJSON());
   }
 
   @Security("jwt")
   @Post()
   createIssue(@Body() body: IIssueCreateRequest): Promise<IIssueDto> {
-    return this._issueService.createIssue(body).then(res => res.toDTO());
+    return this._issueService.createIssue(body).then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -64,7 +64,7 @@ export class IssueController extends Controller {
     id: string,
     @Body() body: IIssueUpdateRequest,
   ): Promise<IIssueDto> {
-    return this._issueService.updateIssue(id, body).then(res => res.toDTO());
+    return this._issueService.updateIssue(id, body).then(res => res.toJSON());
   }
 
   @Security("jwt", ["role:admin"])
@@ -78,7 +78,7 @@ export class IssueController extends Controller {
   assignIssue(issueId: string, userId: string): Promise<IIssueDto> {
     return this._issueService
       .assignIssue(issueId, userId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 
   @Security("jwt")
@@ -86,6 +86,6 @@ export class IssueController extends Controller {
   changeStatus(issueId: string, statusId: string): Promise<IIssueDto> {
     return this._issueService
       .changeStatus(issueId, statusId)
-      .then(res => res.toDTO());
+      .then(res => res.toJSON());
   }
 }

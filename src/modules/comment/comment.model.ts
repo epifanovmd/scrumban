@@ -59,14 +59,14 @@ export class Comment extends Model<CommentModel, CommentCreateModel> {
   declare getIssue: BelongsToGetAssociationMixin<Issue>;
   declare getAuthor: BelongsToGetAssociationMixin<User>;
 
-  toDTO(): ICommentDto {
+  toJSON(): ICommentDto {
     return {
       id: this.id,
       text: this.text,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      issue: this.issue?.toDTO(),
-      author: this.author?.toDTO(),
+      issue: this.issue?.toJSON(),
+      author: this.author,
     };
   }
 }

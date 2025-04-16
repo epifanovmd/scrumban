@@ -131,10 +131,14 @@ export class WorkflowService {
     return [
       { model: Board, as: "board" },
       {
-        model: WorkflowStatus,
+        model: Status,
         as: "statuses",
-        include: [{ model: Status, as: "status" }],
-        order: [["order", "ASC"]],
+        through: {
+          attributes: ["order"],
+        },
+        order: [
+          [{ model: WorkflowStatus, as: "workflowStatuses" }, "order", "ASC"],
+        ],
       },
     ];
   }

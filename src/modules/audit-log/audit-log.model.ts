@@ -85,7 +85,7 @@ export class AuditLog extends Model<AuditLogModel, AuditLogCreateModel> {
   declare user?: NonAttribute<User>;
   declare getUser: BelongsToGetAssociationMixin<User>;
 
-  toDTO(): IAuditLogDto {
+  toJSON(): IAuditLogDto {
     return {
       id: this.id,
       action: this.action,
@@ -98,7 +98,7 @@ export class AuditLog extends Model<AuditLogModel, AuditLogCreateModel> {
       changedFields: this.changedFields,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      user: this.user?.toDTO(),
+      user: this.user,
       ipAddress: this.ipAddress,
       userAgent: this.userAgent,
     };

@@ -59,7 +59,7 @@ export class Priority extends Model<PriorityModel, PriorityCreateModel> {
   declare issues?: NonAttribute<Issue[]>;
   declare getIssues: HasManyGetAssociationsMixin<Issue>;
 
-  toDTO(): IPriorityDto {
+  toJSON(): IPriorityDto {
     return {
       id: this.id,
       name: this.name,

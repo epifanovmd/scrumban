@@ -59,7 +59,7 @@ export class IssueType extends Model<IssueTypeModel, IssueTypeCreateModel> {
   declare issues?: NonAttribute<Issue[]>;
   declare getIssues: HasManyGetAssociationsMixin<Issue>;
 
-  toDTO(): IIssueTypeDto {
+  toJSON(): IIssueTypeDto {
     return {
       id: this.id,
       name: this.name,

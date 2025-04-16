@@ -76,16 +76,16 @@ export class Board extends Model<BoardModel, BoardCreateModel> {
   // Methods
   declare getSprints: HasManyGetAssociationsMixin<Sprint>;
 
-  toDTO(): IBoardDto {
+  toJSON(): IBoardDto {
     return {
       id: this.id,
       name: this.name,
       type: this.type,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      project: this.project?.toDTO(),
-      sprints: this.sprints?.map(item => item.toDTO()),
-      activeSprint: this.activeSprint?.toDTO(),
+      project: this.project?.toJSON(),
+      sprints: this.sprints?.map(item => item.toJSON()),
+      activeSprint: this.activeSprint?.toJSON(),
     };
   }
 }
