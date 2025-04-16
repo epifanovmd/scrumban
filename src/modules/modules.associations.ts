@@ -147,16 +147,37 @@ Board.hasMany(Issue, { foreignKey: "boardId" });
 Issue.belongsTo(Sprint, { foreignKey: "sprintId" });
 Sprint.hasMany(Issue, { foreignKey: "sprintId" });
 
-Issue.belongsTo(User, { as: "assignee", foreignKey: "assigneeId" });
-User.hasMany(Issue, { as: "assignedIssues", foreignKey: "assigneeId" });
+Issue.belongsTo(User, {
+  as: "assignee",
+  foreignKey: "assigneeId",
+});
+User.hasMany(Issue, {
+  as: "assignedIssues",
+  foreignKey: "assigneeId",
+});
 
-Issue.belongsTo(User, { as: "reporter", foreignKey: "reporterId" });
-User.hasMany(Issue, { as: "reportedIssues", foreignKey: "reporterId" });
+Issue.belongsTo(User, {
+  as: "reporter",
+  foreignKey: "reporterId",
+});
+User.hasMany(Issue, {
+  as: "reportedIssues",
+  foreignKey: "reporterId",
+});
 
-Issue.belongsTo(Issue, { as: "parent", foreignKey: "parentId" });
-Issue.hasMany(Issue, { as: "children", foreignKey: "parentId" });
+Issue.belongsTo(Issue, {
+  as: "parent",
+  foreignKey: "parentId",
+});
+Issue.hasMany(Issue, {
+  as: "children",
+  foreignKey: "parentId",
+});
 
-Issue.hasMany(IssueOrder, { foreignKey: "issueId", as: "orderEntries" });
+Issue.hasMany(IssueOrder, {
+  foreignKey: "issueId",
+  as: "orderEntries",
+});
 IssueOrder.belongsTo(Issue, { foreignKey: "issueId" });
 
 Status.hasMany(IssueOrder, { foreignKey: "statusId" });
@@ -166,20 +187,42 @@ Board.hasMany(IssueOrder, { foreignKey: "boardId" });
 IssueOrder.belongsTo(Board, { foreignKey: "boardId" });
 
 // Элементы бэклога
-Backlog.belongsToMany(Issue, { through: BacklogItem, as: "backlogIssues" });
-Issue.belongsToMany(Backlog, { through: BacklogItem, as: "issueBacklogs" });
+Backlog.belongsToMany(Issue, {
+  through: BacklogItem,
+  as: "backlogIssues",
+});
+Issue.belongsToMany(Backlog, {
+  through: BacklogItem,
+  as: "issueBacklogs",
+});
 
 // Спринты
 Board.hasMany(Sprint, { foreignKey: "boardId" });
 Sprint.belongsTo(Board, { foreignKey: "boardId" });
 
-Board.belongsTo(Sprint, { as: "activeSprint", foreignKey: "activeSprintId" });
-Sprint.hasOne(Board, { as: "activeBoard", foreignKey: "activeSprintId" });
+Board.belongsTo(Sprint, {
+  as: "activeSprint",
+  foreignKey: "activeSprintId",
+});
+Sprint.hasOne(Board, {
+  as: "activeBoard",
+  foreignKey: "activeSprintId",
+});
 
 // Планирование спринтов
-Sprint.hasOne(SprintPlanning, { foreignKey: "sprintId" });
+Sprint.hasOne(SprintPlanning, {
+  foreignKey: "sprintId",
+  as: "planning",
+});
 SprintPlanning.belongsTo(Sprint, { foreignKey: "sprintId" });
-
+SprintPlanning.hasMany(SprintPlanningParticipant, {
+  foreignKey: "sprintPlanningId",
+  as: "participants",
+});
+SprintPlanningParticipant.belongsTo(SprintPlanning, {
+  foreignKey: "sprintPlanningId",
+  as: "sprintPlanning",
+});
 SprintPlanning.belongsToMany(User, {
   through: SprintPlanningParticipant,
   as: "planningParticipants",
@@ -188,10 +231,24 @@ User.belongsToMany(SprintPlanning, {
   through: SprintPlanningParticipant,
   as: "userPlannings",
 });
+User.hasMany(SprintPlanningParticipant, {
+  foreignKey: "userId",
+  as: "planningParticipations",
+});
+SprintPlanningParticipant.belongsTo(User, {
+  foreignKey: "userId",
+  as: "user",
+});
 
 // Элементы планирования
-SprintPlanning.hasMany(PlanningItem, { foreignKey: "planningId" });
-PlanningItem.belongsTo(SprintPlanning, { foreignKey: "planningId" });
+SprintPlanning.hasMany(PlanningItem, {
+  foreignKey: "planningId",
+  as: "items",
+});
+PlanningItem.belongsTo(SprintPlanning, {
+  foreignKey: "planningId",
+  as: "planning",
+});
 
 PlanningItem.belongsTo(Issue, { foreignKey: "issueId" });
 Issue.hasOne(PlanningItem, { foreignKey: "issueId" });
@@ -222,12 +279,24 @@ Status.belongsToMany(Workflow, {
 Issue.hasMany(Comment, { foreignKey: "issueId" });
 Comment.belongsTo(Issue, { foreignKey: "issueId" });
 
-Comment.belongsTo(User, { as: "commentAuthor", foreignKey: "authorId" });
-User.hasMany(Comment, { as: "userComments", foreignKey: "authorId" });
+Comment.belongsTo(User, {
+  as: "commentAuthor",
+  foreignKey: "authorId",
+});
+User.hasMany(Comment, {
+  as: "userComments",
+  foreignKey: "authorId",
+});
 
 // Audit associations
-AuditLog.belongsTo(User, { foreignKey: "userId", as: "user" });
-User.hasMany(AuditLog, { foreignKey: "userId", as: "auditLogs" });
+AuditLog.belongsTo(User, {
+  foreignKey: "userId",
+  as: "user",
+});
+User.hasMany(AuditLog, {
+  foreignKey: "userId",
+  as: "auditLogs",
+});
 
 AuditLog.hasMany(AuditFieldChange, {
   foreignKey: "auditLogId",

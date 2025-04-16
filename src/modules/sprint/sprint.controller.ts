@@ -38,12 +38,7 @@ export class SprintController extends Controller {
   ): Promise<ISprintListDto> {
     return this._sprintService
       .getSprints(offset, limit, boardId ? { boardId } : undefined)
-      .then(result => ({
-        offset,
-        limit,
-        count: result.length,
-        data: result.map(res => res.toJSON()),
-      }));
+      .then(result => result.map(res => res.toJSON()));
   }
 
   @Security("jwt")

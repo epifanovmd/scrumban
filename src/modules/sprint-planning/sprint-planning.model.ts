@@ -40,8 +40,7 @@ export interface ISprintPlanningDto {
   participants: IUserDto[];
 }
 
-export interface ISprintPlanningListDto
-  extends ListResponse<ISprintPlanningDto[]> {}
+export type ISprintPlanningListDto = ISprintPlanningDto[];
 
 export interface ISprintPlanningCreateRequest {
   name: string;
@@ -83,6 +82,7 @@ export class SprintPlanning extends Model<
   declare readonly updatedAt: Date;
 
   // Associations
+  declare items: NonAttribute<PlanningItem>;
   declare sprint?: NonAttribute<Sprint>;
   declare participants?: NonAttribute<User[]>;
 

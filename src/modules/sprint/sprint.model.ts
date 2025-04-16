@@ -10,9 +10,12 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db";
-import { ListResponse } from "../../dto/ListResponse";
 import { Board, IBoardDto } from "../board/board.model";
 import { IIssueDto, Issue } from "../issue/issue.model";
+import {
+  ISprintPlanningDto,
+  SprintPlanning,
+} from "../sprint-planning/sprint-planning.model";
 
 export enum ESprintStatus {
   FUTURE = "future",
@@ -30,10 +33,11 @@ export interface ISprintDto {
   createdAt: Date;
   updatedAt: Date;
   board?: IBoardDto;
+  planning?: ISprintPlanningDto;
   issues?: IIssueDto[];
 }
 
-export interface ISprintListDto extends ListResponse<ISprintDto[]> {}
+export type ISprintListDto = ISprintDto[];
 
 export interface ISprintCreateRequest {
   name: string;
@@ -72,6 +76,7 @@ export class Sprint extends Model<SprintModel, SprintCreateModel> {
 
   // Associations
   declare board?: NonAttribute<Board>;
+  declare planning?: NonAttribute<SprintPlanning>;
   declare issues?: NonAttribute<Issue[]>;
 
   // Methods
@@ -88,6 +93,7 @@ export class Sprint extends Model<SprintModel, SprintCreateModel> {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       board: this.board?.toJSON(),
+      planning: this.planning?.toJSON(),
       issues: (this.issues ?? []).map(item => item.toJSON()),
     };
   }

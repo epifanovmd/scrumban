@@ -46,12 +46,7 @@ export class SprintPlanningController extends Controller {
       sprintId ? { sprintId } : undefined,
     );
 
-    return {
-      offset: offset || 0,
-      limit: limit || result.length,
-      count: result.length,
-      data: result.map(res => res.toJSON()),
-    };
+    return result.map(res => res.toJSON());
   }
 
   @Security("jwt")
