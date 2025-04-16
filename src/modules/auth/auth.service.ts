@@ -24,6 +24,8 @@ import {
   TSignUpRequest,
 } from "./auth.types";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 @injectable()
 export class AuthService {
   constructor(
@@ -146,7 +148,7 @@ export class AuthService {
     const [accessToken, refreshToken] = await createTokenAsync([
       {
         userId,
-        opts: { expiresIn: "15m" },
+        opts: { expiresIn: isProduction ? "15m" : "6h" },
       },
       {
         userId,
