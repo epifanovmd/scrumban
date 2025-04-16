@@ -168,10 +168,10 @@ export async function createDefaultScrumWorkflow(
           where: { name: "In Progress", isSystem: true },
           defaults: {
             name: "In Progress",
-            color: "#3366FF",
+            color: "#2196F3",
+            isSystem: true,
             isInitial: false,
             isFinal: false,
-            isSystem: true,
           },
           transaction: currentTransaction,
         }),
@@ -180,9 +180,9 @@ export async function createDefaultScrumWorkflow(
           defaults: {
             name: "Done",
             color: "#00CC66",
+            isSystem: true,
             isInitial: false,
             isFinal: true,
-            isSystem: true,
           },
           transaction: currentTransaction,
         }),

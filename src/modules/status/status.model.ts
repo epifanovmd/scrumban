@@ -132,11 +132,11 @@ Status.afterSync(async () => {
     if (count === 0) {
       await Status.bulkCreate([
         {
-          name: "Open",
-          color: "#4CAF50",
-          isSystem: true,
+          name: "To Do",
+          color: "#FF9900",
           isInitial: true,
           isFinal: false,
+          isSystem: true,
         },
         {
           name: "In Progress",
@@ -147,7 +147,7 @@ Status.afterSync(async () => {
         },
         {
           name: "Done",
-          color: "#9E9E9E",
+          color: "#00CC66",
           isSystem: true,
           isInitial: false,
           isFinal: true,

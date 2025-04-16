@@ -21,12 +21,7 @@ import { ListResponse } from "../../dto/ListResponse";
 import { Backlog } from "../backlog/backlog.model";
 import { Board, EBoardType } from "../board/board.model";
 import { ITeamDto, Team } from "../team/team.model";
-import { User } from "../user/user.model";
-import { IUserDto } from "../user/user.model";
-import {
-  createDefaultKanbanWorkflow,
-  createDefaultScrumWorkflow,
-} from "../workflow/workflow.utils";
+import { IUserDto, User } from "../user/user.model";
 
 export enum EProjectVisibility {
   PRIVATE = "private",
@@ -189,37 +184,23 @@ Project.afterCreate(async (project, options) => {
     { transaction },
   );
 
-  // 2. Создаем доску в зависимости от типа проекта
-  switch (project.type) {
-    case EProjectType.KANBAN: {
-      const kanbanBoard = await Board.create(
-        {
-          name: `${project.name} Kanban Board`,
-          type: EBoardType.KANBAN,
-          projectId: project.id,
-        },
-        { transaction },
-      );
-
-      await createDefaultKanbanWorkflow(kanbanBoard.id, transaction);
-      break;
-    }
-
-    case EProjectType.SCRUM: {
-      const scrumBoard = await Board.create(
-        {
-          name: `${project.name} Scrum Board`,
-          type: EBoardType.SCRUM,
-          projectId: project.id,
-        },
-        { transaction },
-      );
-
-      await createDefaultScrumWorkflow(scrumBoard.id, transaction);
-      break;
-    }
-
-    default:
-      throw new Error(`Unsupported project type: ${project.type}`);
+  if (project.type === EProjectType.KANBAN) {
+    await Board.create(
+      {
+        name: `${project.name} Kanban Board`,
+        type: EBoardType.KANBAN,
+        projectId: project.id,
+      },
+      { transaction },
+    );
+  } else if (project.type === EProjectType.SCRUM) {
+    await Board.create(
+      {
+        name: `${project.name} Scrum Board`,
+        type: EBoardType.SCRUM,
+        projectId: project.id,
+      },
+      { transaction },
+    );
   }
 });
