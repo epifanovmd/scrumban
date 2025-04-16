@@ -1,3 +1,4 @@
+import { BadRequestException, NotFoundException } from "@force-dev/utils";
 import { inject, injectable } from "inversify";
 import {
   Body,
@@ -12,11 +13,13 @@ import {
   Tags,
 } from "tsoa";
 
+import { Issue } from "../issue/issue.model";
 import {
   IWorkflowCreateRequest,
   IWorkflowDto,
   IWorkflowListDto,
   IWorkflowUpdateRequest,
+  WorkflowStatus,
 } from "./workflow.model";
 import { WorkflowService } from "./workflow.service";
 
@@ -74,6 +77,50 @@ export class WorkflowController extends Controller {
   @Delete("{id}")
   deleteWorkflow(id: string): Promise<string> {
     return this._workflowService.deleteWorkflow(id);
+  }
+
+  @Security("jwt")
+  @Patch("{workflowId}/statuses/{statusId}/wip-limit")
+  async setWipLimit(
+    workflowId: string,
+    statusId: string,
+    @Query("limit") limit: number,
+  ): Promise<IWorkflowDto> {
+    if (limit < 0) {
+      throw new BadRequestException("WIP limit cannot be negative");
+    }
+
+    await WorkflowStatus.update(
+      { wipLimit: limit },
+      { where: { workflowId, statusId } },
+    );
+
+    return this._workflowService
+      .getWorkflowById(workflowId)
+      .then(res => res.toDTO());
+  }
+
+  @Security("jwt")
+  @Get("{workflowId}/statuses/{statusId}/wip-check")
+  async checkWipLimit(
+    workflowId: string,
+    statusId: string,
+  ): Promise<{ current: number; limit?: number; exceeded: boolean }> {
+    const status = await WorkflowStatus.findOne({
+      where: { workflowId, statusId },
+    });
+
+    if (!status) {
+      throw new NotFoundException("Workflow status not found");
+    }
+
+    const current = await Issue.count({ where: { statusId } });
+
+    return {
+      current,
+      limit: status.wipLimit,
+      exceeded: status.wipLimit ? current >= status.wipLimit : false,
+    };
   }
 
   @Security("jwt")

@@ -1,16 +1,22 @@
-import { NotFoundException } from "@force-dev/utils";
+import {
+  ConflictException,
+  ForbiddenException,
+  NotFoundException,
+} from "@force-dev/utils";
 import { inject, injectable } from "inversify";
 import { Includeable, Transaction, WhereOptions } from "sequelize";
 
 import { sequelize } from "../../db";
+import { Board, EBoardType } from "../board/board.model";
 import { IssueType } from "../issue-type/issue-type.model";
 import { Priority } from "../priority/priority.model";
 import { ProjectService } from "../project";
 import { Project } from "../project/project.model";
-import { StatusService } from "../status";
+import { ESprintStatus, Sprint } from "../sprint/sprint.model";
 import { Status } from "../status/status.model";
 import { UserService } from "../user";
 import { User } from "../user/user.model";
+import { Workflow, WorkflowStatus } from "../workflow/workflow.model";
 import { IIssueCreateRequest, IIssueUpdateRequest, Issue } from "./issue.model";
 
 @injectable()
@@ -18,7 +24,6 @@ export class IssueService {
   constructor(
     @inject(UserService) private _userService: UserService,
     @inject(ProjectService) private _projectService: ProjectService,
-    @inject(StatusService) private _statusService: StatusService,
   ) {}
 
   async getIssues(
@@ -108,10 +113,37 @@ export class IssueService {
   }
 
   async changeStatus(issueId: string, statusId: string) {
-    await this._statusService.getStatusById(statusId);
-    await Issue.update({ statusId }, { where: { id: issueId } });
+    const issue = await this.getIssueById(issueId);
+    const board = await Board.findByPk(issue.boardId);
 
-    return this.getIssueById(issueId);
+    // Для Kanban проверяем WIP-лимиты
+    if (board?.type === EBoardType.KANBAN) {
+      const workflowStatus = await WorkflowStatus.findOne({
+        where: { statusId },
+        include: [Workflow],
+      });
+
+      if (workflowStatus?.wipLimit) {
+        const currentCount = await Issue.count({ where: { statusId } });
+
+        if (currentCount >= workflowStatus.wipLimit) {
+          throw new ConflictException(
+            `WIP limit exceeded for status ${statusId}`,
+          );
+        }
+      }
+    }
+
+    // Для Scrum нельзя менять статусы задач в закрытом спринте
+    if (issue.sprintId) {
+      const sprint = await Sprint.findByPk(issue.sprintId);
+
+      if (sprint?.status === ESprintStatus.CLOSED) {
+        throw new ForbiddenException("Cannot change status in closed sprint");
+      }
+    }
+
+    return issue.update({ statusId });
   }
 
   private async _validateIssueDependencies(

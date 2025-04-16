@@ -7,19 +7,19 @@ import { UserController } from './modules/user/user.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './modules/auth/auth.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { BiometricController } from './modules/biometric/biometric.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { FileController } from './modules/file/file.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TeamController } from './modules/team/team.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ProjectController } from './modules/project/project.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { StatusController } from './modules/status/status.controller';
+import { IssueController } from './modules/issue/issue.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BacklogController } from './modules/backlog/backlog.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { BiometricController } from './modules/biometric/biometric.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BoardController } from './modules/board/board.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { FileController } from './modules/file/file.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { IssueTypeController } from './modules/issue-type/issue-type.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -32,6 +32,10 @@ import { ProfileController } from './modules/profile/profile.controller';
 import { SprintController } from './modules/sprint/sprint.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SprintPlanningController } from './modules/sprint-planning/sprint-planning.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { StatusController } from './modules/status/status.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { WorkflowController } from './modules/workflow/workflow.controller';
 import { koaAuthentication } from './middleware/authenticate.middleware';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
@@ -200,74 +204,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IRegisterBiometricResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "registered": {"dataType":"boolean","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IRegisterBiometricRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "userId": {"dataType":"string","required":true},
-            "deviceId": {"dataType":"string","required":true},
-            "deviceName": {"dataType":"string","required":true},
-            "publicKey": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IGenerateNonceResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "nonce": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IGenerateNonceRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "userId": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IVerifyBiometricSignatureResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "verified": {"dataType":"boolean","required":true},
-            "tokens": {"dataType":"nestedObjectLiteral","nestedProperties":{"refreshToken":{"dataType":"string","required":true},"accessToken":{"dataType":"string","required":true}},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IVerifyBiometricSignatureRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "userId": {"dataType":"string","required":true},
-            "deviceId": {"dataType":"string","required":true},
-            "signature": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IFileDto": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "type": {"dataType":"string","required":true},
-            "url": {"dataType":"string","required":true},
-            "size": {"dataType":"double","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ETeamRole": {
         "dataType": "refEnum",
         "enums": ["leader","member"],
@@ -385,81 +321,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IStatusDto": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string"},
-            "color": {"dataType":"string","required":true},
-            "isInitial": {"dataType":"boolean","required":true},
-            "isFinal": {"dataType":"boolean","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IStatusListDto": {
-        "dataType": "refObject",
-        "properties": {
-            "count": {"dataType":"double"},
-            "offset": {"dataType":"double"},
-            "limit": {"dataType":"double"},
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IStatusDto"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IStatusCreateRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string"},
-            "color": {"dataType":"string"},
-            "isInitial": {"dataType":"boolean"},
-            "isFinal": {"dataType":"boolean"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IStatusUpdateRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "name": {"dataType":"string"},
-            "description": {"dataType":"string"},
-            "color": {"dataType":"string"},
-            "isInitial": {"dataType":"boolean"},
-            "isFinal": {"dataType":"boolean"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "EBoardType": {
-        "dataType": "refEnum",
-        "enums": ["scrum","kanban"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ESprintStatus": {
-        "dataType": "refEnum",
-        "enums": ["future","active","closed"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IBoardDto": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "type": {"ref":"EBoardType","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-            "project": {"ref":"IProjectDto"},
-            "sprints": {"dataType":"array","array":{"dataType":"refObject","ref":"ISprintDto"}},
-            "activeSprint": {"ref":"ISprintDto"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "EIssueType": {
         "dataType": "refEnum",
         "enums": ["story","task","bug","epic","subtask"],
@@ -496,19 +357,42 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ISprintDto": {
+    "IStatusDto": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
-            "goal": {"dataType":"string"},
-            "startDate": {"dataType":"datetime","required":true},
-            "endDate": {"dataType":"datetime","required":true},
-            "status": {"ref":"ESprintStatus","required":true},
+            "description": {"dataType":"string"},
+            "color": {"dataType":"string","required":true},
+            "isInitial": {"dataType":"boolean","required":true},
+            "isFinal": {"dataType":"boolean","required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime","required":true},
-            "board": {"ref":"IBoardDto"},
-            "issues": {"dataType":"array","array":{"dataType":"refObject","ref":"IIssueDto"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "EBoardType": {
+        "dataType": "refEnum",
+        "enums": ["scrum","kanban"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ESprintStatus": {
+        "dataType": "refEnum",
+        "enums": ["future","active","closed"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBoardDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "type": {"ref":"EBoardType","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "project": {"ref":"IProjectDto"},
+            "sprints": {"dataType":"array","array":{"dataType":"refObject","ref":"ISprintDto"}},
+            "activeSprint": {"ref":"ISprintDto"},
         },
         "additionalProperties": false,
     },
@@ -538,6 +422,23 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ISprintDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "goal": {"dataType":"string"},
+            "startDate": {"dataType":"datetime","required":true},
+            "endDate": {"dataType":"datetime","required":true},
+            "status": {"ref":"ESprintStatus","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "board": {"ref":"IBoardDto"},
+            "issues": {"dataType":"array","array":{"dataType":"refObject","ref":"IIssueDto"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ICommentDto": {
         "dataType": "refObject",
         "properties": {
@@ -560,6 +461,57 @@ const models: TsoaRoute.Models = {
             "description": {"dataType":"string"},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IIssueListDto": {
+        "dataType": "refObject",
+        "properties": {
+            "count": {"dataType":"double"},
+            "offset": {"dataType":"double"},
+            "limit": {"dataType":"double"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IIssueDto"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IIssueCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "title": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "typeId": {"dataType":"string","required":true},
+            "priorityId": {"dataType":"string","required":true},
+            "statusId": {"dataType":"string"},
+            "projectId": {"dataType":"string","required":true},
+            "boardId": {"dataType":"string","required":true},
+            "sprintId": {"dataType":"string"},
+            "assigneeId": {"dataType":"string"},
+            "reporterId": {"dataType":"string","required":true},
+            "parentId": {"dataType":"string"},
+            "estimate": {"dataType":"double"},
+            "labels": {"dataType":"array","array":{"dataType":"string"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IIssueUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "title": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "typeId": {"dataType":"string"},
+            "priorityId": {"dataType":"string"},
+            "statusId": {"dataType":"string"},
+            "projectId": {"dataType":"string"},
+            "boardId": {"dataType":"string"},
+            "sprintId": {"dataType":"string"},
+            "assigneeId": {"dataType":"string"},
+            "reporterId": {"dataType":"string"},
+            "parentId": {"dataType":"string"},
+            "estimate": {"dataType":"double"},
+            "labels": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
@@ -614,6 +566,60 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IRegisterBiometricResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "registered": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IRegisterBiometricRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"string","required":true},
+            "deviceId": {"dataType":"string","required":true},
+            "deviceName": {"dataType":"string","required":true},
+            "publicKey": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IGenerateNonceResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "nonce": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IGenerateNonceRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IVerifyBiometricSignatureResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "verified": {"dataType":"boolean","required":true},
+            "tokens": {"dataType":"nestedObjectLiteral","nestedProperties":{"refreshToken":{"dataType":"string","required":true},"accessToken":{"dataType":"string","required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IVerifyBiometricSignatureRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"string","required":true},
+            "deviceId": {"dataType":"string","required":true},
+            "signature": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IBoardListDto": {
         "dataType": "refObject",
         "properties": {
@@ -642,6 +648,20 @@ const models: TsoaRoute.Models = {
             "type": {"ref":"EBoardType"},
             "projectId": {"dataType":"string"},
             "activeSprintId": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IFileDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "type": {"dataType":"string","required":true},
+            "url": {"dataType":"string","required":true},
+            "size": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -1004,6 +1024,89 @@ const models: TsoaRoute.Models = {
     "EPlanningItemStatus": {
         "dataType": "refEnum",
         "enums": ["proposed","approved","rejected","committed"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IStatusListDto": {
+        "dataType": "refObject",
+        "properties": {
+            "count": {"dataType":"double"},
+            "offset": {"dataType":"double"},
+            "limit": {"dataType":"double"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IStatusDto"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IStatusCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "color": {"dataType":"string"},
+            "isInitial": {"dataType":"boolean"},
+            "isFinal": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IStatusUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "color": {"dataType":"string"},
+            "isInitial": {"dataType":"boolean"},
+            "isFinal": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWorkflowDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "isDefault": {"dataType":"boolean","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "board": {"ref":"IBoardDto"},
+            "statuses": {"dataType":"array","array":{"dataType":"refObject","ref":"IStatusDto"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWorkflowListDto": {
+        "dataType": "refObject",
+        "properties": {
+            "count": {"dataType":"double"},
+            "offset": {"dataType":"double"},
+            "limit": {"dataType":"double"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IWorkflowDto"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWorkflowCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "boardId": {"dataType":"string","required":true},
+            "isDefault": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWorkflowUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "boardId": {"dataType":"string"},
+            "isDefault": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -1497,184 +1600,6 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/biometric/register',
-            ...(fetchMiddlewares<Middleware>(BiometricController)),
-            ...(fetchMiddlewares<Middleware>(BiometricController.prototype.registerBiometric)),
-
-            async function BiometricController_registerBiometric(context: any, next: any) {
-            const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"IRegisterBiometricRequest"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<BiometricController>(BiometricController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.registerBiometric.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/biometric/generate-nonce',
-            ...(fetchMiddlewares<Middleware>(BiometricController)),
-            ...(fetchMiddlewares<Middleware>(BiometricController.prototype.generateNonce)),
-
-            async function BiometricController_generateNonce(context: any, next: any) {
-            const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"IGenerateNonceRequest"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<BiometricController>(BiometricController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.generateNonce.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/biometric/verify-signature',
-            ...(fetchMiddlewares<Middleware>(BiometricController)),
-            ...(fetchMiddlewares<Middleware>(BiometricController.prototype.verifySignature)),
-
-            async function BiometricController_verifySignature(context: any, next: any) {
-            const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"IVerifyBiometricSignatureRequest"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<BiometricController>(BiometricController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.verifySignature.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/file',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(FileController)),
-            ...(fetchMiddlewares<Middleware>(FileController.prototype.getFileById)),
-
-            async function FileController_getFileById(context: any, next: any) {
-            const args = {
-                    id: {"in":"query","name":"id","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<FileController>(FileController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.getFileById.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/file',
-            authenticateMiddleware([{"jwt":[]}]),
-            upload.single('file'),
-            ...(fetchMiddlewares<Middleware>(FileController)),
-            ...(fetchMiddlewares<Middleware>(FileController.prototype.uploadFile)),
-
-            async function FileController_uploadFile(context: any, next: any) {
-            const args = {
-                    file: {"in":"formData","name":"file","required":true,"dataType":"file"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<FileController>(FileController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.uploadFile.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.delete('/api/file/:id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(FileController)),
-            ...(fetchMiddlewares<Middleware>(FileController.prototype.deleteFile)),
-
-            async function FileController_deleteFile(context: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<FileController>(FileController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.deleteFile.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         router.get('/api/team/list',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<Middleware>(TeamController)),
@@ -2136,15 +2061,16 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/status/list',
+        router.get('/api/issue/list',
             authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(StatusController)),
-            ...(fetchMiddlewares<Middleware>(StatusController.prototype.getStatuses)),
+            ...(fetchMiddlewares<Middleware>(IssueController)),
+            ...(fetchMiddlewares<Middleware>(IssueController.prototype.getIssues)),
 
-            async function StatusController_getStatuses(context: any, next: any) {
+            async function IssueController_getIssues(context: any, next: any) {
             const args = {
                     offset: {"in":"query","name":"offset","dataType":"double"},
                     limit: {"in":"query","name":"limit","dataType":"double"},
+                    projectId: {"in":"query","name":"projectId","dataType":"string"},
             };
 
             let validatedArgs: any[] = [];
@@ -2158,21 +2084,21 @@ export function RegisterRoutes(router: KoaRouter) {
 
             const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
 
-            const controller: any = await container.get<StatusController>(StatusController);
+            const controller: any = await container.get<IssueController>(IssueController);
             if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
             }
 
-            const promise = controller.getStatuses.apply(controller, validatedArgs as any);
+            const promise = controller.getIssues.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/status/:id',
+        router.get('/api/issue/:id',
             authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(StatusController)),
-            ...(fetchMiddlewares<Middleware>(StatusController.prototype.getStatusById)),
+            ...(fetchMiddlewares<Middleware>(IssueController)),
+            ...(fetchMiddlewares<Middleware>(IssueController.prototype.getIssueById)),
 
-            async function StatusController_getStatusById(context: any, next: any) {
+            async function IssueController_getIssueById(context: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
             };
@@ -2188,23 +2114,23 @@ export function RegisterRoutes(router: KoaRouter) {
 
             const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
 
-            const controller: any = await container.get<StatusController>(StatusController);
+            const controller: any = await container.get<IssueController>(IssueController);
             if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
             }
 
-            const promise = controller.getStatusById.apply(controller, validatedArgs as any);
+            const promise = controller.getIssueById.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/status',
-            authenticateMiddleware([{"jwt":["role:admin"]}]),
-            ...(fetchMiddlewares<Middleware>(StatusController)),
-            ...(fetchMiddlewares<Middleware>(StatusController.prototype.createStatus)),
+        router.post('/api/issue',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(IssueController)),
+            ...(fetchMiddlewares<Middleware>(IssueController.prototype.createIssue)),
 
-            async function StatusController_createStatus(context: any, next: any) {
+            async function IssueController_createIssue(context: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"IStatusCreateRequest"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IIssueCreateRequest"},
             };
 
             let validatedArgs: any[] = [];
@@ -2218,54 +2144,24 @@ export function RegisterRoutes(router: KoaRouter) {
 
             const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
 
-            const controller: any = await container.get<StatusController>(StatusController);
+            const controller: any = await container.get<IssueController>(IssueController);
             if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
             }
 
-            const promise = controller.createStatus.apply(controller, validatedArgs as any);
+            const promise = controller.createIssue.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.patch('/api/status/:id',
-            authenticateMiddleware([{"jwt":["role:admin"]}]),
-            ...(fetchMiddlewares<Middleware>(StatusController)),
-            ...(fetchMiddlewares<Middleware>(StatusController.prototype.updateStatus)),
+        router.patch('/api/issue/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(IssueController)),
+            ...(fetchMiddlewares<Middleware>(IssueController.prototype.updateIssue)),
 
-            async function StatusController_updateStatus(context: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                    body: {"in":"body","name":"body","required":true,"ref":"IStatusUpdateRequest"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<StatusController>(StatusController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.updateStatus.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.delete('/api/status/:id',
-            authenticateMiddleware([{"jwt":["role:admin"]}]),
-            ...(fetchMiddlewares<Middleware>(StatusController)),
-            ...(fetchMiddlewares<Middleware>(StatusController.prototype.deleteStatus)),
-
-            async function StatusController_deleteStatus(context: any, next: any) {
+            async function IssueController_updateIssue(context: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IIssueUpdateRequest"},
             };
 
             let validatedArgs: any[] = [];
@@ -2279,12 +2175,104 @@ export function RegisterRoutes(router: KoaRouter) {
 
             const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
 
-            const controller: any = await container.get<StatusController>(StatusController);
+            const controller: any = await container.get<IssueController>(IssueController);
             if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
             }
 
-            const promise = controller.deleteStatus.apply(controller, validatedArgs as any);
+            const promise = controller.updateIssue.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/issue/:id',
+            authenticateMiddleware([{"jwt":["role:admin"]}]),
+            ...(fetchMiddlewares<Middleware>(IssueController)),
+            ...(fetchMiddlewares<Middleware>(IssueController.prototype.deleteIssue)),
+
+            async function IssueController_deleteIssue(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<IssueController>(IssueController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.deleteIssue.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/issue/:issueId/assign/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(IssueController)),
+            ...(fetchMiddlewares<Middleware>(IssueController.prototype.assignIssue)),
+
+            async function IssueController_assignIssue(context: any, next: any) {
+            const args = {
+                    issueId: {"in":"path","name":"issueId","required":true,"dataType":"string"},
+                    userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<IssueController>(IssueController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.assignIssue.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/issue/:issueId/status/:statusId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(IssueController)),
+            ...(fetchMiddlewares<Middleware>(IssueController.prototype.changeStatus)),
+
+            async function IssueController_changeStatus(context: any, next: any) {
+            const args = {
+                    issueId: {"in":"path","name":"issueId","required":true,"dataType":"string"},
+                    statusId: {"in":"path","name":"statusId","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<IssueController>(IssueController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.changeStatus.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2504,6 +2492,93 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/biometric/register',
+            ...(fetchMiddlewares<Middleware>(BiometricController)),
+            ...(fetchMiddlewares<Middleware>(BiometricController.prototype.registerBiometric)),
+
+            async function BiometricController_registerBiometric(context: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"IRegisterBiometricRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<BiometricController>(BiometricController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.registerBiometric.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/biometric/generate-nonce',
+            ...(fetchMiddlewares<Middleware>(BiometricController)),
+            ...(fetchMiddlewares<Middleware>(BiometricController.prototype.generateNonce)),
+
+            async function BiometricController_generateNonce(context: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"IGenerateNonceRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<BiometricController>(BiometricController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.generateNonce.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/biometric/verify-signature',
+            ...(fetchMiddlewares<Middleware>(BiometricController)),
+            ...(fetchMiddlewares<Middleware>(BiometricController.prototype.verifySignature)),
+
+            async function BiometricController_verifySignature(context: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"IVerifyBiometricSignatureRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<BiometricController>(BiometricController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.verifySignature.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         router.get('/api/board/list',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<Middleware>(BoardController)),
@@ -2685,6 +2760,97 @@ export function RegisterRoutes(router: KoaRouter) {
             }
 
             const promise = controller.setActiveSprint.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/file',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(FileController)),
+            ...(fetchMiddlewares<Middleware>(FileController.prototype.getFileById)),
+
+            async function FileController_getFileById(context: any, next: any) {
+            const args = {
+                    id: {"in":"query","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<FileController>(FileController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getFileById.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/file',
+            authenticateMiddleware([{"jwt":[]}]),
+            upload.single('file'),
+            ...(fetchMiddlewares<Middleware>(FileController)),
+            ...(fetchMiddlewares<Middleware>(FileController.prototype.uploadFile)),
+
+            async function FileController_uploadFile(context: any, next: any) {
+            const args = {
+                    file: {"in":"formData","name":"file","required":true,"dataType":"file"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<FileController>(FileController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.uploadFile.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/file/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(FileController)),
+            ...(fetchMiddlewares<Middleware>(FileController.prototype.deleteFile)),
+
+            async function FileController_deleteFile(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<FileController>(FileController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.deleteFile.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -3934,6 +4100,437 @@ export function RegisterRoutes(router: KoaRouter) {
             }
 
             const promise = controller.updatePlanningItemStatus.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/status/list',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(StatusController)),
+            ...(fetchMiddlewares<Middleware>(StatusController.prototype.getStatuses)),
+
+            async function StatusController_getStatuses(context: any, next: any) {
+            const args = {
+                    offset: {"in":"query","name":"offset","dataType":"double"},
+                    limit: {"in":"query","name":"limit","dataType":"double"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<StatusController>(StatusController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getStatuses.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/status/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(StatusController)),
+            ...(fetchMiddlewares<Middleware>(StatusController.prototype.getStatusById)),
+
+            async function StatusController_getStatusById(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<StatusController>(StatusController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getStatusById.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/status',
+            authenticateMiddleware([{"jwt":["role:admin"]}]),
+            ...(fetchMiddlewares<Middleware>(StatusController)),
+            ...(fetchMiddlewares<Middleware>(StatusController.prototype.createStatus)),
+
+            async function StatusController_createStatus(context: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"IStatusCreateRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<StatusController>(StatusController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.createStatus.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.patch('/api/status/:id',
+            authenticateMiddleware([{"jwt":["role:admin"]}]),
+            ...(fetchMiddlewares<Middleware>(StatusController)),
+            ...(fetchMiddlewares<Middleware>(StatusController.prototype.updateStatus)),
+
+            async function StatusController_updateStatus(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IStatusUpdateRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<StatusController>(StatusController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.updateStatus.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/status/:id',
+            authenticateMiddleware([{"jwt":["role:admin"]}]),
+            ...(fetchMiddlewares<Middleware>(StatusController)),
+            ...(fetchMiddlewares<Middleware>(StatusController.prototype.deleteStatus)),
+
+            async function StatusController_deleteStatus(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<StatusController>(StatusController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.deleteStatus.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/workflow/list',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.getWorkflows)),
+
+            async function WorkflowController_getWorkflows(context: any, next: any) {
+            const args = {
+                    offset: {"in":"query","name":"offset","dataType":"double"},
+                    limit: {"in":"query","name":"limit","dataType":"double"},
+                    boardId: {"in":"query","name":"boardId","dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getWorkflows.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/workflow/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.getWorkflowById)),
+
+            async function WorkflowController_getWorkflowById(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getWorkflowById.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/workflow',
+            authenticateMiddleware([{"jwt":["role:admin"]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.createWorkflow)),
+
+            async function WorkflowController_createWorkflow(context: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"IWorkflowCreateRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.createWorkflow.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.patch('/api/workflow/:id',
+            authenticateMiddleware([{"jwt":["role:admin"]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.updateWorkflow)),
+
+            async function WorkflowController_updateWorkflow(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IWorkflowUpdateRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.updateWorkflow.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/workflow/:id',
+            authenticateMiddleware([{"jwt":["role:admin"]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.deleteWorkflow)),
+
+            async function WorkflowController_deleteWorkflow(context: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.deleteWorkflow.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.patch('/api/workflow/:workflowId/statuses/:statusId/wip-limit',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.setWipLimit)),
+
+            async function WorkflowController_setWipLimit(context: any, next: any) {
+            const args = {
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
+                    statusId: {"in":"path","name":"statusId","required":true,"dataType":"string"},
+                    limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.setWipLimit.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/workflow/:workflowId/statuses/:statusId/wip-check',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.checkWipLimit)),
+
+            async function WorkflowController_checkWipLimit(context: any, next: any) {
+            const args = {
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
+                    statusId: {"in":"path","name":"statusId","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.checkWipLimit.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/workflow/:workflowId/statuses/:statusId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.addStatusToWorkflow)),
+
+            async function WorkflowController_addStatusToWorkflow(context: any, next: any) {
+            const args = {
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
+                    statusId: {"in":"path","name":"statusId","required":true,"dataType":"string"},
+                    order: {"in":"query","name":"order","dataType":"double"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.addStatusToWorkflow.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/workflow/:workflowId/statuses/:statusId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.removeStatusFromWorkflow)),
+
+            async function WorkflowController_removeStatusFromWorkflow(context: any, next: any) {
+            const args = {
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
+                    statusId: {"in":"path","name":"statusId","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.removeStatusFromWorkflow.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

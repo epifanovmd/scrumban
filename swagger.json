@@ -368,153 +368,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IRegisterBiometricResponse": {
-				"properties": {
-					"registered": {
-						"type": "boolean"
-					}
-				},
-				"required": [
-					"registered"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IRegisterBiometricRequest": {
-				"properties": {
-					"userId": {
-						"type": "string"
-					},
-					"deviceId": {
-						"type": "string"
-					},
-					"deviceName": {
-						"type": "string"
-					},
-					"publicKey": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"userId",
-					"deviceId",
-					"deviceName",
-					"publicKey"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IGenerateNonceResponse": {
-				"properties": {
-					"nonce": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"nonce"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IGenerateNonceRequest": {
-				"properties": {
-					"userId": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"userId"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IVerifyBiometricSignatureResponse": {
-				"properties": {
-					"verified": {
-						"type": "boolean"
-					},
-					"tokens": {
-						"properties": {
-							"refreshToken": {
-								"type": "string"
-							},
-							"accessToken": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"refreshToken",
-							"accessToken"
-						],
-						"type": "object"
-					}
-				},
-				"required": [
-					"verified",
-					"tokens"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IVerifyBiometricSignatureRequest": {
-				"properties": {
-					"userId": {
-						"type": "string"
-					},
-					"deviceId": {
-						"type": "string"
-					},
-					"signature": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"userId",
-					"deviceId",
-					"signature"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IFileDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"type": {
-						"type": "string"
-					},
-					"url": {
-						"type": "string"
-					},
-					"size": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"type",
-					"url",
-					"size",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ETeamRole": {
 				"enum": [
 					"leader",
@@ -782,176 +635,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IStatusDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"isInitial": {
-						"type": "boolean"
-					},
-					"isFinal": {
-						"type": "boolean"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"color",
-					"isInitial",
-					"isFinal",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IStatusListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IStatusDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IStatusCreateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"isInitial": {
-						"type": "boolean"
-					},
-					"isFinal": {
-						"type": "boolean"
-					}
-				},
-				"required": [
-					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IStatusUpdateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"isInitial": {
-						"type": "boolean"
-					},
-					"isFinal": {
-						"type": "boolean"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"EBoardType": {
-				"enum": [
-					"scrum",
-					"kanban"
-				],
-				"type": "string"
-			},
-			"ESprintStatus": {
-				"enum": [
-					"future",
-					"active",
-					"closed"
-				],
-				"type": "string"
-			},
-			"IBoardDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/EBoardType"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"project": {
-						"$ref": "#/components/schemas/IProjectDto"
-					},
-					"sprints": {
-						"items": {
-							"$ref": "#/components/schemas/ISprintDto"
-						},
-						"type": "array"
-					},
-					"activeSprint": {
-						"$ref": "#/components/schemas/ISprintDto"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"type",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"EIssueType": {
 				"enum": [
 					"story",
@@ -1039,7 +722,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ISprintDto": {
+			"IStatusDto": {
 				"properties": {
 					"id": {
 						"type": "string"
@@ -1047,19 +730,64 @@
 					"name": {
 						"type": "string"
 					},
-					"goal": {
+					"description": {
 						"type": "string"
 					},
-					"startDate": {
+					"color": {
+						"type": "string"
+					},
+					"isInitial": {
+						"type": "boolean"
+					},
+					"isFinal": {
+						"type": "boolean"
+					},
+					"createdAt": {
 						"type": "string",
 						"format": "date-time"
 					},
-					"endDate": {
+					"updatedAt": {
 						"type": "string",
 						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"color",
+					"isInitial",
+					"isFinal",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EBoardType": {
+				"enum": [
+					"scrum",
+					"kanban"
+				],
+				"type": "string"
+			},
+			"ESprintStatus": {
+				"enum": [
+					"future",
+					"active",
+					"closed"
+				],
+				"type": "string"
+			},
+			"IBoardDto": {
+				"properties": {
+					"id": {
+						"type": "string"
 					},
-					"status": {
-						"$ref": "#/components/schemas/ESprintStatus"
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/EBoardType"
 					},
 					"createdAt": {
 						"type": "string",
@@ -1069,22 +797,23 @@
 						"type": "string",
 						"format": "date-time"
 					},
-					"board": {
-						"$ref": "#/components/schemas/IBoardDto"
+					"project": {
+						"$ref": "#/components/schemas/IProjectDto"
 					},
-					"issues": {
+					"sprints": {
 						"items": {
-							"$ref": "#/components/schemas/IIssueDto"
+							"$ref": "#/components/schemas/ISprintDto"
 						},
 						"type": "array"
+					},
+					"activeSprint": {
+						"$ref": "#/components/schemas/ISprintDto"
 					}
 				},
 				"required": [
 					"id",
 					"name",
-					"startDate",
-					"endDate",
-					"status",
+					"type",
 					"createdAt",
 					"updatedAt"
 				],
@@ -1167,6 +896,58 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ISprintDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"goal": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"status": {
+						"$ref": "#/components/schemas/ESprintStatus"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"board": {
+						"$ref": "#/components/schemas/IBoardDto"
+					},
+					"issues": {
+						"items": {
+							"$ref": "#/components/schemas/IIssueDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"startDate",
+					"endDate",
+					"status",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ICommentDto": {
 				"properties": {
 					"id": {
@@ -1229,6 +1010,139 @@
 					"createdAt",
 					"updatedAt"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IIssueListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IIssueDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IIssueCreateRequest": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"typeId": {
+						"type": "string"
+					},
+					"priorityId": {
+						"type": "string"
+					},
+					"statusId": {
+						"type": "string"
+					},
+					"projectId": {
+						"type": "string"
+					},
+					"boardId": {
+						"type": "string"
+					},
+					"sprintId": {
+						"type": "string"
+					},
+					"assigneeId": {
+						"type": "string"
+					},
+					"reporterId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string"
+					},
+					"estimate": {
+						"type": "number",
+						"format": "double"
+					},
+					"labels": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"title",
+					"typeId",
+					"priorityId",
+					"projectId",
+					"boardId",
+					"reporterId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IIssueUpdateRequest": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"typeId": {
+						"type": "string"
+					},
+					"priorityId": {
+						"type": "string"
+					},
+					"statusId": {
+						"type": "string"
+					},
+					"projectId": {
+						"type": "string"
+					},
+					"boardId": {
+						"type": "string"
+					},
+					"sprintId": {
+						"type": "string"
+					},
+					"assigneeId": {
+						"type": "string"
+					},
+					"reporterId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string"
+					},
+					"estimate": {
+						"type": "number",
+						"format": "double"
+					},
+					"labels": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1347,6 +1261,114 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IRegisterBiometricResponse": {
+				"properties": {
+					"registered": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"registered"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRegisterBiometricRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"deviceId": {
+						"type": "string"
+					},
+					"deviceName": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"deviceId",
+					"deviceName",
+					"publicKey"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IGenerateNonceResponse": {
+				"properties": {
+					"nonce": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"nonce"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IGenerateNonceRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyBiometricSignatureResponse": {
+				"properties": {
+					"verified": {
+						"type": "boolean"
+					},
+					"tokens": {
+						"properties": {
+							"refreshToken": {
+								"type": "string"
+							},
+							"accessToken": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"refreshToken",
+							"accessToken"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"verified",
+					"tokens"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyBiometricSignatureRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"deviceId": {
+						"type": "string"
+					},
+					"signature": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"deviceId",
+					"signature"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IBoardListDto": {
 				"properties": {
 					"count": {
@@ -1409,6 +1431,45 @@
 						"type": "string"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IFileDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"size": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"type",
+					"url",
+					"size",
+					"createdAt",
+					"updatedAt"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -2173,6 +2234,187 @@
 					"committed"
 				],
 				"type": "string"
+			},
+			"IStatusListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IStatusDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStatusCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"isInitial": {
+						"type": "boolean"
+					},
+					"isFinal": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStatusUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"isInitial": {
+						"type": "boolean"
+					},
+					"isFinal": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"isDefault": {
+						"type": "boolean"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"board": {
+						"$ref": "#/components/schemas/IBoardDto"
+					},
+					"statuses": {
+						"items": {
+							"$ref": "#/components/schemas/IStatusDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"isDefault",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IWorkflowDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"boardId": {
+						"type": "string"
+					},
+					"isDefault": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name",
+					"boardId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"boardId": {
+						"type": "string"
+					},
+					"isDefault": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -2826,231 +3068,6 @@
 				}
 			}
 		},
-		"/api/biometric/register": {
-			"post": {
-				"operationId": "RegisterBiometric",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IRegisterBiometricResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Регистрирует биометрические ключи с устройства",
-				"tags": [
-					"Biometric"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IRegisterBiometricRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/biometric/generate-nonce": {
-			"post": {
-				"operationId": "GenerateNonce",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IGenerateNonceResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Генерирует nonce, который необходимо подписать на устройстве",
-				"tags": [
-					"Biometric"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IGenerateNonceRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/biometric/verify-signature": {
-			"post": {
-				"operationId": "VerifySignature",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IVerifyBiometricSignatureResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Проверяет подпись и авторизует пользователя",
-				"tags": [
-					"Biometric"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IVerifyBiometricSignatureRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/file": {
-			"get": {
-				"operationId": "GetFileById",
-				"responses": {
-					"200": {
-						"description": "Информацию о файле, включая метаданные и его содержимое",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IFileDto"
-								}
-							}
-						}
-					}
-				},
-				"description": "Получить файл по ID.\nЭтот эндпоинт позволяет пользователю получить файл по его уникальному ID.\nОн защищен с использованием JWT-аутентификации, что означает, что только аутентифицированные пользователи могут получить доступ к этому ресурсу.",
-				"summary": "Получение файла по ID",
-				"tags": [
-					"Files"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"description": "ID файла, который нужно получить",
-						"in": "query",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"post": {
-				"operationId": "UploadFile",
-				"responses": {
-					"200": {
-						"description": "Массив объектов, представляющих загруженные файлы с их метаданными",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IFileDto"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"description": "Загрузить файл.\nЭтот эндпоинт позволяет пользователю загрузить один файл на сервер.\nОн защищен с использованием JWT-аутентификации, что означает, что только аутентифицированные пользователи могут загружать файлы.",
-				"summary": "Загрузка файла",
-				"tags": [
-					"Files"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"multipart/form-data": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"file": {
-										"type": "string",
-										"format": "binary",
-										"description": "Файл, который нужно загрузить"
-									}
-								},
-								"required": [
-									"file"
-								]
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/file/{id}": {
-			"delete": {
-				"operationId": "DeleteFile",
-				"responses": {
-					"200": {
-						"description": "Количество удаленных файлов (обычно 1, если файл существует)",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "number",
-									"format": "double"
-								}
-							}
-						}
-					}
-				},
-				"description": "Удалить файл.\nЭтот эндпоинт позволяет пользователю удалить файл по его ID. Доступ разрешен только пользователю, который загрузил файл, либо администратору.",
-				"summary": "Удаление файла",
-				"tags": [
-					"Files"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"description": "ID файла, который нужно удалить",
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/api/team/list": {
 			"get": {
 				"operationId": "GetTeams",
@@ -3685,23 +3702,23 @@
 				]
 			}
 		},
-		"/api/status/list": {
+		"/api/issue/list": {
 			"get": {
-				"operationId": "GetStatuses",
+				"operationId": "GetIssues",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IStatusListDto"
+									"$ref": "#/components/schemas/IIssueListDto"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Status"
+					"Issue"
 				],
 				"security": [
 					{
@@ -3726,27 +3743,35 @@
 							"format": "double",
 							"type": "number"
 						}
+					},
+					{
+						"in": "query",
+						"name": "projectId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
 		},
-		"/api/status/{id}": {
+		"/api/issue/{id}": {
 			"get": {
-				"operationId": "GetStatusById",
+				"operationId": "GetIssueById",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IStatusDto"
+									"$ref": "#/components/schemas/IIssueDto"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Status"
+					"Issue"
 				],
 				"security": [
 					{
@@ -3765,27 +3790,25 @@
 				]
 			},
 			"patch": {
-				"operationId": "UpdateStatus",
+				"operationId": "UpdateIssue",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IStatusDto"
+									"$ref": "#/components/schemas/IIssueDto"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Status"
+					"Issue"
 				],
 				"security": [
 					{
-						"jwt": [
-							"role:admin"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
@@ -3803,14 +3826,14 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IStatusUpdateRequest"
+								"$ref": "#/components/schemas/IIssueUpdateRequest"
 							}
 						}
 					}
 				}
 			},
 			"delete": {
-				"operationId": "DeleteStatus",
+				"operationId": "DeleteIssue",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3824,7 +3847,7 @@
 					}
 				},
 				"tags": [
-					"Status"
+					"Issue"
 				],
 				"security": [
 					{
@@ -3845,29 +3868,27 @@
 				]
 			}
 		},
-		"/api/status": {
+		"/api/issue": {
 			"post": {
-				"operationId": "CreateStatus",
+				"operationId": "CreateIssue",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IStatusDto"
+									"$ref": "#/components/schemas/IIssueDto"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Status"
+					"Issue"
 				],
 				"security": [
 					{
-						"jwt": [
-							"role:admin"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [],
@@ -3876,11 +3897,97 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IStatusCreateRequest"
+								"$ref": "#/components/schemas/IIssueCreateRequest"
 							}
 						}
 					}
 				}
+			}
+		},
+		"/api/issue/{issueId}/assign/{userId}": {
+			"post": {
+				"operationId": "AssignIssue",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IIssueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Issue"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "issueId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/issue/{issueId}/status/{statusId}": {
+			"post": {
+				"operationId": "ChangeStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IIssueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Issue"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "issueId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/api/backlog/list": {
@@ -4182,6 +4289,105 @@
 				]
 			}
 		},
+		"/api/biometric/register": {
+			"post": {
+				"operationId": "RegisterBiometric",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IRegisterBiometricResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Регистрирует биометрические ключи с устройства",
+				"tags": [
+					"Biometric"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IRegisterBiometricRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/biometric/generate-nonce": {
+			"post": {
+				"operationId": "GenerateNonce",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IGenerateNonceResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Генерирует nonce, который необходимо подписать на устройстве",
+				"tags": [
+					"Biometric"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IGenerateNonceRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/biometric/verify-signature": {
+			"post": {
+				"operationId": "VerifySignature",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IVerifyBiometricSignatureResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Проверяет подпись и авторизует пользователя",
+				"tags": [
+					"Biometric"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IVerifyBiometricSignatureRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/board/list": {
 			"get": {
 				"operationId": "GetBoards",
@@ -4423,6 +4629,132 @@
 					{
 						"in": "path",
 						"name": "sprintId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/file": {
+			"get": {
+				"operationId": "GetFileById",
+				"responses": {
+					"200": {
+						"description": "Информацию о файле, включая метаданные и его содержимое",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IFileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить файл по ID.\nЭтот эндпоинт позволяет пользователю получить файл по его уникальному ID.\nОн защищен с использованием JWT-аутентификации, что означает, что только аутентифицированные пользователи могут получить доступ к этому ресурсу.",
+				"summary": "Получение файла по ID",
+				"tags": [
+					"Files"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "ID файла, который нужно получить",
+						"in": "query",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "UploadFile",
+				"responses": {
+					"200": {
+						"description": "Массив объектов, представляющих загруженные файлы с их метаданными",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IFileDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Загрузить файл.\nЭтот эндпоинт позволяет пользователю загрузить один файл на сервер.\nОн защищен с использованием JWT-аутентификации, что означает, что только аутентифицированные пользователи могут загружать файлы.",
+				"summary": "Загрузка файла",
+				"tags": [
+					"Files"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"format": "binary",
+										"description": "Файл, который нужно загрузить"
+									}
+								},
+								"required": [
+									"file"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/file/{id}": {
+			"delete": {
+				"operationId": "DeleteFile",
+				"responses": {
+					"200": {
+						"description": "Количество удаленных файлов (обычно 1, если файл существует)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"format": "double"
+								}
+							}
+						}
+					}
+				},
+				"description": "Удалить файл.\nЭтот эндпоинт позволяет пользователю удалить файл по его ID. Доступ разрешен только пользователю, который загрузил файл, либо администратору.",
+				"summary": "Удаление файла",
+				"tags": [
+					"Files"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "ID файла, который нужно удалить",
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -6082,6 +6414,615 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/EPlanningItemStatus"
+						}
+					}
+				]
+			}
+		},
+		"/api/status/list": {
+			"get": {
+				"operationId": "GetStatuses",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/status/{id}": {
+			"get": {
+				"operationId": "GetStatusById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IStatusUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/status": {
+			"post": {
+				"operationId": "CreateStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IStatusCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/workflow/list": {
+			"get": {
+				"operationId": "GetWorkflows",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "boardId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/{id}": {
+			"get": {
+				"operationId": "GetWorkflowById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWorkflowUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow": {
+			"post": {
+				"operationId": "CreateWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWorkflowCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/workflow/{workflowId}/statuses/{statusId}/wip-limit": {
+			"patch": {
+				"operationId": "SetWipLimit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/{workflowId}/statuses/{statusId}/wip-check": {
+			"get": {
+				"operationId": "CheckWipLimit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"exceeded": {
+											"type": "boolean"
+										},
+										"limit": {
+											"type": "number",
+											"format": "double"
+										},
+										"current": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"exceeded",
+										"current"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/{workflowId}/statuses/{statusId}": {
+			"post": {
+				"operationId": "AddStatusToWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "RemoveStatusFromWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
 						}
 					}
 				]

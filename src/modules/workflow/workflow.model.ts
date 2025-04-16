@@ -131,6 +131,7 @@ export class WorkflowStatus extends Model {
   declare workflowId: string;
   declare statusId: string;
   declare order: number;
+  declare wipLimit?: number;
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -170,6 +171,10 @@ WorkflowStatus.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
+    },
+    wipLimit: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
