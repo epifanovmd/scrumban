@@ -1,0 +1,35 @@
+{
+  "entryFile": "./src/app.controllers.ts",
+  "noImplicitAdditionalProperties": "silently-remove-extras",
+  "spec": {
+    "schemes": [
+      "http"
+    ],
+    "securityDefinitions": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "spec": {
+      "servers": [
+        {
+          "url": "http://localhost:8181",
+          "description": "Local dev"
+        }
+      ]
+    },
+    "outputDirectory": "./",
+    "specMerging": "recursive",
+    "specVersion": 3
+  },
+  "routes": {
+    "authenticationModule": "./src/middleware/authenticate.middleware.ts",
+    "entryFile": "./src/app.controllers.ts",
+    "routesDir": "./src",
+    "basePath": "/",
+    "middleware": "koa",
+    "iocModule": "./src/app.module.ts"
+  }
+}

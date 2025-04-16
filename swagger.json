@@ -1,0 +1,2616 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"ERole": {
+				"enum": [
+					"admin",
+					"user",
+					"guest"
+				],
+				"type": "string"
+			},
+			"EPermissions": {
+				"enum": [
+					"read",
+					"write",
+					"delete"
+				],
+				"type": "string"
+			},
+			"IPermissionDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"$ref": "#/components/schemas/EPermissions"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRoleDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"$ref": "#/components/schemas/ERole"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"permissions": {
+						"items": {
+							"$ref": "#/components/schemas/IPermissionDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"createdAt",
+					"updatedAt",
+					"permissions"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"emailVerified": {
+						"type": "boolean"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"role": {
+						"$ref": "#/components/schemas/IRoleDto"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"updatedAt",
+					"role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IUserDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"data": {}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserUpdateRequest": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITokensDto": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accessToken",
+					"refreshToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserWithTokensDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"emailVerified": {
+						"type": "boolean"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"role": {
+						"$ref": "#/components/schemas/IRoleDto"
+					},
+					"tokens": {
+						"$ref": "#/components/schemas/ITokensDto"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"updatedAt",
+					"role",
+					"tokens"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TSignUpRequest": {
+				"allOf": [
+					{
+						"properties": {
+							"password": {
+								"type": "string"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"firstName": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"password"
+						],
+						"type": "object"
+					},
+					{
+						"anyOf": [
+							{
+								"properties": {
+									"phone": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"phone"
+								],
+								"type": "object"
+							},
+							{
+								"properties": {
+									"phone": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"email"
+								],
+								"type": "object"
+							}
+						]
+					}
+				]
+			},
+			"ISignInRequest": {
+				"properties": {
+					"login": {
+						"type": "string",
+						"description": "Может быть телефоном, email-ом и username-ом"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"login",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserLogin": {
+				"properties": {
+					"login": {
+						"type": "string",
+						"description": "Может быть телефоном, email-ом и username-ом"
+					}
+				},
+				"required": [
+					"login"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserResetPasswordRequest": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"password",
+					"token"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRegisterBiometricResponse": {
+				"properties": {
+					"registered": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"registered"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRegisterBiometricRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"deviceId": {
+						"type": "string"
+					},
+					"deviceName": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"deviceId",
+					"deviceName",
+					"publicKey"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IGenerateNonceResponse": {
+				"properties": {
+					"nonce": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"nonce"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IGenerateNonceRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyBiometricSignatureResponse": {
+				"properties": {
+					"verified": {
+						"type": "boolean"
+					},
+					"tokens": {
+						"properties": {
+							"refreshToken": {
+								"type": "string"
+							},
+							"accessToken": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"refreshToken",
+							"accessToken"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"verified",
+					"tokens"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyBiometricSignatureRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"deviceId": {
+						"type": "string"
+					},
+					"signature": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userId",
+					"deviceId",
+					"signature"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IFileDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"size": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"type",
+					"url",
+					"size",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EProjectVisibility": {
+				"enum": [
+					"private",
+					"team",
+					"public"
+				],
+				"type": "string"
+			},
+			"ETeamRole": {
+				"enum": [
+					"leader",
+					"member"
+				],
+				"type": "string"
+			},
+			"ITeamMemberDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"user": {
+						"$ref": "#/components/schemas/IUserDto"
+					},
+					"role": {
+						"$ref": "#/components/schemas/ETeamRole"
+					}
+				},
+				"required": [
+					"id",
+					"role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITeamDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"members": {
+						"items": {
+							"$ref": "#/components/schemas/ITeamMemberDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProjectDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"key": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/EProjectVisibility"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"teams": {
+						"items": {
+							"$ref": "#/components/schemas/ITeamDto"
+						},
+						"type": "array"
+					},
+					"lead": {
+						"$ref": "#/components/schemas/IUserDto"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"key",
+					"visibility",
+					"createdAt",
+					"updatedAt",
+					"teams"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProjectCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"key": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/EProjectVisibility"
+					},
+					"leadId": {
+						"type": "string"
+					},
+					"teamIds": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"key"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProjectListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProjectDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProjectUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"key": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/EProjectVisibility"
+					},
+					"leadId": {
+						"type": "string"
+					},
+					"teamIds": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Base64URLString": {
+				"type": "string",
+				"description": "An attempt to communicate that this isn't just any string, but a Base64URL-encoded string"
+			},
+			"PublicKeyCredentialType": {
+				"type": "string",
+				"enum": [
+					"public-key"
+				],
+				"nullable": false
+			},
+			"AuthenticatorTransportFuture": {
+				"type": "string",
+				"enum": [
+					"ble",
+					"cable",
+					"hybrid",
+					"internal",
+					"nfc",
+					"smart-card",
+					"usb"
+				],
+				"description": "A super class of TypeScript's `AuthenticatorTransport` that includes support for the latest\ntransports. Should eventually be replaced by TypeScript's when TypeScript gets updated to\nknow about it (sometime after 4.6.3)"
+			},
+			"PublicKeyCredentialDescriptorJSON": {
+				"description": "https://w3c.github.io/webauthn/#dictdef-publickeycredentialdescriptorjson",
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"type": {
+						"$ref": "#/components/schemas/PublicKeyCredentialType"
+					},
+					"transports": {
+						"items": {
+							"$ref": "#/components/schemas/AuthenticatorTransportFuture"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserVerificationRequirement": {
+				"type": "string",
+				"enum": [
+					"discouraged",
+					"preferred",
+					"required"
+				]
+			},
+			"AuthenticationExtensionsClientInputs": {
+				"properties": {
+					"appid": {
+						"type": "string"
+					},
+					"credProps": {
+						"type": "boolean"
+					},
+					"hmacCreateSecret": {
+						"type": "boolean"
+					},
+					"minPinLength": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PublicKeyCredentialRequestOptionsJSON": {
+				"description": "A variant of PublicKeyCredentialRequestOptions suitable for JSON transmission to the browser to\n(eventually) get passed into navigator.credentials.get(...) in the browser.",
+				"properties": {
+					"challenge": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"timeout": {
+						"type": "number",
+						"format": "double"
+					},
+					"rpId": {
+						"type": "string"
+					},
+					"allowCredentials": {
+						"items": {
+							"$ref": "#/components/schemas/PublicKeyCredentialDescriptorJSON"
+						},
+						"type": "array"
+					},
+					"userVerification": {
+						"$ref": "#/components/schemas/UserVerificationRequirement"
+					},
+					"extensions": {
+						"$ref": "#/components/schemas/AuthenticationExtensionsClientInputs"
+					}
+				},
+				"required": [
+					"challenge"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"COSEAlgorithmIdentifier": {
+				"type": "number",
+				"format": "double"
+			},
+			"AuthenticatorAttestationResponseJSON": {
+				"description": "A slightly-modified AuthenticatorAttestationResponse to simplify working with ArrayBuffers that\nare Base64URL-encoded in the browser so that they can be sent as JSON to the server.\n\nhttps://w3c.github.io/webauthn/#dictdef-authenticatorattestationresponsejson",
+				"properties": {
+					"clientDataJSON": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"attestationObject": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"authenticatorData": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"transports": {
+						"items": {
+							"$ref": "#/components/schemas/AuthenticatorTransportFuture"
+						},
+						"type": "array"
+					},
+					"publicKeyAlgorithm": {
+						"$ref": "#/components/schemas/COSEAlgorithmIdentifier"
+					},
+					"publicKey": {
+						"$ref": "#/components/schemas/Base64URLString"
+					}
+				},
+				"required": [
+					"clientDataJSON",
+					"attestationObject"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthenticatorAttachment": {
+				"type": "string",
+				"enum": [
+					"cross-platform",
+					"platform"
+				]
+			},
+			"CredentialPropertiesOutput": {
+				"properties": {
+					"rk": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthenticationExtensionsClientOutputs": {
+				"properties": {
+					"appid": {
+						"type": "boolean"
+					},
+					"credProps": {
+						"$ref": "#/components/schemas/CredentialPropertiesOutput"
+					},
+					"hmacCreateSecret": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RegistrationResponseJSON": {
+				"description": "A slightly-modified RegistrationCredential to simplify working with ArrayBuffers that\nare Base64URL-encoded in the browser so that they can be sent as JSON to the server.\n\nhttps://w3c.github.io/webauthn/#dictdef-registrationresponsejson",
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"rawId": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"response": {
+						"$ref": "#/components/schemas/AuthenticatorAttestationResponseJSON"
+					},
+					"authenticatorAttachment": {
+						"$ref": "#/components/schemas/AuthenticatorAttachment"
+					},
+					"clientExtensionResults": {
+						"$ref": "#/components/schemas/AuthenticationExtensionsClientOutputs"
+					},
+					"type": {
+						"$ref": "#/components/schemas/PublicKeyCredentialType"
+					}
+				},
+				"required": [
+					"id",
+					"rawId",
+					"response",
+					"clientExtensionResults",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyRegistrationRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"data": {
+						"$ref": "#/components/schemas/RegistrationResponseJSON"
+					}
+				},
+				"required": [
+					"userId",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyAuthenticationResponse": {
+				"properties": {
+					"verified": {
+						"type": "boolean"
+					},
+					"tokens": {
+						"$ref": "#/components/schemas/ITokensDto"
+					}
+				},
+				"required": [
+					"verified"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthenticatorAssertionResponseJSON": {
+				"description": "A slightly-modified AuthenticatorAssertionResponse to simplify working with ArrayBuffers that\nare Base64URL-encoded in the browser so that they can be sent as JSON to the server.\n\nhttps://w3c.github.io/webauthn/#dictdef-authenticatorassertionresponsejson",
+				"properties": {
+					"clientDataJSON": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"authenticatorData": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"signature": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"userHandle": {
+						"$ref": "#/components/schemas/Base64URLString"
+					}
+				},
+				"required": [
+					"clientDataJSON",
+					"authenticatorData",
+					"signature"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthenticationResponseJSON": {
+				"description": "A slightly-modified AuthenticationCredential to simplify working with ArrayBuffers that\nare Base64URL-encoded in the browser so that they can be sent as JSON to the server.\n\nhttps://w3c.github.io/webauthn/#dictdef-authenticationresponsejson",
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"rawId": {
+						"$ref": "#/components/schemas/Base64URLString"
+					},
+					"response": {
+						"$ref": "#/components/schemas/AuthenticatorAssertionResponseJSON"
+					},
+					"authenticatorAttachment": {
+						"$ref": "#/components/schemas/AuthenticatorAttachment"
+					},
+					"clientExtensionResults": {
+						"$ref": "#/components/schemas/AuthenticationExtensionsClientOutputs"
+					},
+					"type": {
+						"$ref": "#/components/schemas/PublicKeyCredentialType"
+					}
+				},
+				"required": [
+					"id",
+					"rawId",
+					"response",
+					"clientExtensionResults",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyAuthenticationRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"data": {
+						"$ref": "#/components/schemas/AuthenticationResponseJSON"
+					}
+				},
+				"required": [
+					"userId",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"gender": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"lastOnline": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"avatar": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IFileDto"
+							}
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"updatedAt",
+					"avatar"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileUpdateRequest": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"bio": {
+						"type": "string"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"gender": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProfileDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"info": {
+		"title": "rest-api",
+		"version": "1.0.0",
+		"description": "REST API Template App",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "Epifanov Andrei",
+			"email": "epifanovmd@gmail.com"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/api/user/all": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/user/verifyEmail/{code}": {
+			"get": {
+				"operationId": "VerifyEmail",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "code",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/user/update/{id}": {
+			"patch": {
+				"operationId": "UpdateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/user/delete/{id}": {
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/auth/sign-up": {
+			"post": {
+				"operationId": "SignUp",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserWithTokensDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Регистрация нового пользователя",
+				"summary": "Регистрация",
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Данные для регистрации",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TSignUpRequest",
+								"description": "Данные для регистрации"
+							},
+							"example": {
+								"email": "user@example.com",
+								"password": "password123",
+								"firstName": "John",
+								"lastName": "Doe"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/sign-in": {
+			"post": {
+				"operationId": "SignIn",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserWithTokensDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Авторизация пользователя",
+				"summary": "Вход в систему",
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Данные для входа",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISignInRequest",
+								"description": "Данные для входа"
+							},
+							"example": {
+								"login": "epifanovmd@gmail.com",
+								"password": "Epifan123"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/request-reset-password": {
+			"post": {
+				"operationId": "RequestResetPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Запрос на сброс пароля",
+				"summary": "Запрос сброса пароля",
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserLogin"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/reset-password": {
+			"post": {
+				"operationId": "ResetPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Сброс пароля",
+				"summary": "Смена пароля",
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Токен и новый пароль",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserResetPasswordRequest",
+								"description": "Токен и новый пароль"
+							},
+							"example": {
+								"token": "reset-token-123",
+								"password": "newSecurePassword"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/refresh": {
+			"post": {
+				"operationId": "Refresh",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITokensDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Обновление токенов доступа",
+				"summary": "Обновление токенов",
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Тело запроса с refresh токеном",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"refreshToken": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"refreshToken"
+								],
+								"type": "object",
+								"description": "Тело запроса с refresh токеном"
+							},
+							"example": {
+								"refreshToken": "old-refresh-token"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/biometric/register": {
+			"post": {
+				"operationId": "RegisterBiometric",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IRegisterBiometricResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Регистрирует биометрические ключи с устройства",
+				"tags": [
+					"Biometric"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IRegisterBiometricRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/biometric/generate-nonce": {
+			"post": {
+				"operationId": "GenerateNonce",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IGenerateNonceResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Генерирует nonce, который необходимо подписать на устройстве",
+				"tags": [
+					"Biometric"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IGenerateNonceRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/biometric/verify-signature": {
+			"post": {
+				"operationId": "VerifySignature",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IVerifyBiometricSignatureResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Проверяет подпись и авторизует пользователя",
+				"tags": [
+					"Biometric"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IVerifyBiometricSignatureRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/file": {
+			"get": {
+				"operationId": "GetFileById",
+				"responses": {
+					"200": {
+						"description": "Информацию о файле, включая метаданные и его содержимое",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IFileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить файл по ID.\nЭтот эндпоинт позволяет пользователю получить файл по его уникальному ID.\nОн защищен с использованием JWT-аутентификации, что означает, что только аутентифицированные пользователи могут получить доступ к этому ресурсу.",
+				"summary": "Получение файла по ID",
+				"tags": [
+					"Files"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "ID файла, который нужно получить",
+						"in": "query",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "UploadFile",
+				"responses": {
+					"200": {
+						"description": "Массив объектов, представляющих загруженные файлы с их метаданными",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IFileDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Загрузить файл.\nЭтот эндпоинт позволяет пользователю загрузить один файл на сервер.\nОн защищен с использованием JWT-аутентификации, что означает, что только аутентифицированные пользователи могут загружать файлы.",
+				"summary": "Загрузка файла",
+				"tags": [
+					"Files"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"format": "binary",
+										"description": "Файл, который нужно загрузить"
+									}
+								},
+								"required": [
+									"file"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/file/{id}": {
+			"delete": {
+				"operationId": "DeleteFile",
+				"responses": {
+					"200": {
+						"description": "Количество удаленных файлов (обычно 1, если файл существует)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"format": "double"
+								}
+							}
+						}
+					}
+				},
+				"description": "Удалить файл.\nЭтот эндпоинт позволяет пользователю удалить файл по его ID. Доступ разрешен только пользователю, который загрузил файл, либо администратору.",
+				"summary": "Удаление файла",
+				"tags": [
+					"Files"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "ID файла, который нужно удалить",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/project": {
+			"post": {
+				"operationId": "CreateProject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Создать новый проект",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProjectCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/project/list": {
+			"get": {
+				"operationId": "GetProjects",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectListDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить список проектов",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/project/{id}": {
+			"get": {
+				"operationId": "GetProjectById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить проект по ID",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateProject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Обновить проект",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProjectUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteProject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Удалить проект",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/project/team/{teamId}": {
+			"get": {
+				"operationId": "GetProjectsByTeam",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectListDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить проекты команды",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/project/{projectId}/assign-lead/{userId}": {
+			"patch": {
+				"operationId": "SetProjectLead",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Назначить лидера проекта",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "projectId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/project/{projectId}/add-team/{teamId}": {
+			"post": {
+				"operationId": "AddTeamToProject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Добавить команду к проекту",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "projectId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/project/{projectId}/remove-team/{teamId}": {
+			"delete": {
+				"operationId": "RemoveTeamFromProject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProjectDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Удалить команду из проекта",
+				"tags": [
+					"Project"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "projectId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/passkeys/generate-registration-options": {
+			"post": {
+				"operationId": "GenerateRegistrationOptions",
+				"responses": {
+					"200": {
+						"description": "Параметры для регистрации устройства, соответствующие спецификации WebAuthn.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PublicKeyCredentialRequestOptionsJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Генерирует параметры для регистрации нового устройства с использованием Passkeys.\nЭтот эндпоинт используется для создания параметров, которые будут отправлены клиенту для\nрегистрации нового устройства. Клиент должен будет выполнить регистрацию, используя данные\nсгенерированные этим запросом.",
+				"summary": "Генерация параметров регистрации",
+				"tags": [
+					"Passkeys"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userId": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"userId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/passkeys/verify-registration": {
+			"post": {
+				"operationId": "VerifyRegistration",
+				"responses": {
+					"200": {
+						"description": "Объект, который сообщает, был ли процесс регистрации успешным.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"verified": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"verified"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Проверяет данные регистрации для нового устройства.\nЭтот эндпоинт используется для подтверждения данных, которые были отправлены клиентом\nпосле попытки регистрации нового устройства. Он валидирует предоставленные данные\nи завершает процесс регистрации.",
+				"summary": "Проверка данных регистрации",
+				"tags": [
+					"Passkeys"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IVerifyRegistrationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/passkeys/generate-authentication-options": {
+			"post": {
+				"operationId": "GenerateAuthenticationOptions",
+				"responses": {
+					"200": {
+						"description": "Параметры для аутентификации устройства, соответствующие спецификации WebAuthn.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PublicKeyCredentialRequestOptionsJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Генерирует параметры для аутентификации пользователя с использованием Passkeys.\nЭтот эндпоинт создает параметры аутентификации, которые будут отправлены клиенту для\nвыполнения аутентификации с помощью Passkeys. Эти параметры используются клиентом для\nвызова аутентификации на его устройстве.",
+				"summary": "Генерация параметров аутентификации",
+				"tags": [
+					"Passkeys"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userId": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"userId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/passkeys/verify-authentication": {
+			"post": {
+				"operationId": "VerifyAuthentication",
+				"responses": {
+					"200": {
+						"description": "Ответ, который включает в себя результат аутентификации и другие данные.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IVerifyAuthenticationResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Проверяет данные аутентификации для пользователя.\nЭтот эндпоинт проверяет данные аутентификации, которые были отправлены с клиентской стороны,\nи завершается успешной или неудачной аутентификацией в зависимости от результатов проверки.",
+				"summary": "Проверка данных аутентификации",
+				"tags": [
+					"Passkeys"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IVerifyAuthenticationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/my": {
+			"get": {
+				"operationId": "GetMyProfile",
+				"responses": {
+					"200": {
+						"description": "Пользователь",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить профиль текущего пользователя.\nЭтот эндпоинт позволяет получить данные профиля пользователя, который выполнил запрос.\nИспользуется для получения информации о текущем пользователе, например, его имени, email, и других данных.",
+				"summary": "Получение профиля текущего пользователя",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/my/update": {
+			"patch": {
+				"operationId": "UpdateMyProfile",
+				"responses": {
+					"200": {
+						"description": "Обновленный профиль пользователя",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Обновить профиль текущего пользователя.\nЭтот эндпоинт позволяет пользователю обновить свои данные, такие как имя, email и другие параметры профиля.",
+				"summary": "Обновление профиля текущего пользователя",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"description": "Обновленные данные профиля",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileUpdateRequest",
+								"description": "Обновленные данные профиля"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/my/delete": {
+			"delete": {
+				"operationId": "DeleteMyProfile",
+				"responses": {
+					"200": {
+						"description": "Сообщение об успешном удалении",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"description": "Удалить профиль текущего пользователя.\nЭтот эндпоинт позволяет пользователю удалить свой профиль из системы.",
+				"summary": "Удаление профиля текущего пользователя",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/all": {
+			"get": {
+				"operationId": "GetProfiles",
+				"responses": {
+					"200": {
+						"description": "Список всех профилей с информацией о них",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileListDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить все профили.\nЭтот эндпоинт позволяет администраторам получить список всех пользователей системы.\nОн поддерживает пагинацию через параметры `offset` и `limit`.",
+				"summary": "Получение всех профилей",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "Смещение для пагинации",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "Лимит количества возвращаемых профилей",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/{userId}": {
+			"get": {
+				"operationId": "GetProfileById",
+				"responses": {
+					"200": {
+						"description": "Пользователь по ID",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Получить профиль по ID.\nЭтот эндпоинт позволяет получить профиль другого пользователя по его ID. Доступен только для администраторов.",
+				"summary": "Получение профиля по ID",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "ID пользователя, профиль которого нужно получить",
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/update/{userId}": {
+			"patch": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Обновленный профиль пользователя",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Обновить профиль другого пользователя.\nЭтот эндпоинт позволяет администраторам обновлять профиль других пользователей.",
+				"summary": "Обновление профиля другого пользователя",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"description": "ID пользователя, профиль которого необходимо обновить",
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Данные для обновления профиля",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileUpdateRequest",
+								"description": "Данные для обновления профиля"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/avatar/upload": {
+			"post": {
+				"operationId": "AddAvatar",
+				"responses": {
+					"200": {
+						"description": "Обновленный профиль с новым аватаром",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Загрузить аватар для текущего пользователя.\nЭтот эндпоинт позволяет пользователю загрузить аватар для своего профиля.",
+				"summary": "Загрузка аватара",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"format": "binary",
+										"description": "Файл изображения аватара"
+									}
+								},
+								"required": [
+									"file"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/avatar": {
+			"delete": {
+				"operationId": "RemoveAvatar",
+				"responses": {
+					"200": {
+						"description": "Обновленный профиль без аватара",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Удалить аватар пользователя.\nЭтот эндпоинт позволяет пользователю удалить свой аватар.",
+				"summary": "Удаление аватара",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/delete/{userId}": {
+			"delete": {
+				"operationId": "DeleteProfile",
+				"responses": {
+					"200": {
+						"description": "Сообщение об успешном удалении",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"description": "Удалить профиль другого пользователя.\nЭтот эндпоинт позволяет администраторам удалить профиль другого пользователя из системы.",
+				"summary": "Удаление профиля другого пользователя",
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"description": "ID пользователя, профиль которого необходимо удалить",
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8181",
+			"description": "Local dev"
+		}
+	]
+}
