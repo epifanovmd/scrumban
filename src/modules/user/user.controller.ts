@@ -94,7 +94,7 @@ export class UserController extends Controller {
    * @returns Список всех профилей с информацией о них
    */
   @Security("jwt")
-  @Get("all")
+  @Get("list")
   getUsers(
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
