@@ -59,6 +59,12 @@ export interface IIssueDto {
   comments?: ICommentDto[];
 }
 
+export interface IIssueOrderUpdateRequest {
+  statusId: string;
+  order: number;
+  boardId: string;
+}
+
 export interface IIssueListDto extends ListResponse<IIssueDto[]> {}
 
 export type IssueModel = InferAttributes<Issue>;

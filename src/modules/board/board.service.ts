@@ -4,11 +4,18 @@ import { Includeable, Transaction, WhereOptions } from "sequelize";
 
 import { sequelize } from "../../db";
 import { Issue } from "../issue/issue.model";
+import { IssueOrder } from "../issue-order/issue-order.model";
 import { ProjectService } from "../project";
 import { Project } from "../project/project.model";
 import { Sprint } from "../sprint/sprint.model";
-import { Workflow } from "../workflow/workflow.model";
-import { Board, IBoardCreateRequest, IBoardUpdateRequest } from "./board.model";
+import { Status } from "../status/status.model";
+import { Workflow, WorkflowStatus } from "../workflow/workflow.model";
+import {
+  Board,
+  IBoardCreateRequest,
+  IBoardUpdateRequest,
+  IStatusWithIssuesDto,
+} from "./board.model";
 
 @injectable()
 export class BoardService {
@@ -38,6 +45,41 @@ export class BoardService {
     if (!board) throw new NotFoundException("Board not found");
 
     return board;
+  }
+
+  async getBoardWithIssues(boardId: string) {
+    const board = await this.getBoardById(boardId);
+    const workflow = await Workflow.findOne({
+      where: { boardId },
+      include: [
+        {
+          model: Status,
+          as: "statuses",
+          through: { attributes: ["order"] },
+          order: [[WorkflowStatus, "order", "ASC"]],
+          include: [
+            {
+              model: Issue,
+              as: "issues",
+              include: [{ model: IssueOrder, as: "orderEntries" }],
+              where: { boardId },
+              order: [
+                [{ model: IssueOrder, as: "orderEntries" }, "order", "ASC"],
+              ],
+              required: false,
+            },
+          ],
+        },
+      ],
+    });
+
+    return {
+      board,
+      statuses: workflow?.statuses?.map(status => ({
+        status,
+        issues: status.issues || [],
+      })),
+    };
   }
 
   async getBoardsByProject(projectId: string, offset?: number, limit?: number) {

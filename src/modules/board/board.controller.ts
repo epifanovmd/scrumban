@@ -18,6 +18,7 @@ import {
   IBoardDto,
   IBoardListDto,
   IBoardUpdateRequest,
+  IBoardWithStatusesDto,
 } from "./board.model";
 import { BoardService } from "./board.service";
 
@@ -44,6 +45,19 @@ export class BoardController extends Controller {
         count: result.length,
         data: result.map(res => res.toJSON()),
       }));
+  }
+
+  @Get("{id}/issued")
+  async getFullBoard(id: string): Promise<IBoardWithStatusesDto> {
+    const { board, statuses } = await this._boardService.getBoardWithIssues(id);
+
+    return {
+      ...board.toJSON(),
+      statuses: (statuses ?? []).map(({ status, issues }) => ({
+        status: status.toJSON(),
+        issues: issues.map(i => i.toJSON()),
+      })),
+    };
   }
 
   @Security("jwt")

@@ -113,8 +113,7 @@
 				"required": [
 					"id",
 					"createdAt",
-					"updatedAt",
-					"role"
+					"updatedAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -263,7 +262,6 @@
 					"id",
 					"createdAt",
 					"updatedAt",
-					"role",
 					"tokens"
 				],
 				"type": "object",
@@ -635,6 +633,63 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"EBoardType": {
+				"enum": [
+					"scrum",
+					"kanban"
+				],
+				"type": "string"
+			},
+			"ESprintStatus": {
+				"enum": [
+					"future",
+					"active",
+					"closed"
+				],
+				"type": "string"
+			},
+			"IBoardDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/EBoardType"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"project": {
+						"$ref": "#/components/schemas/IProjectDto"
+					},
+					"sprints": {
+						"items": {
+							"$ref": "#/components/schemas/ISprintDto"
+						},
+						"type": "array"
+					},
+					"activeSprint": {
+						"$ref": "#/components/schemas/ISprintDto"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"type",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"EIssueType": {
 				"enum": [
 					"story",
@@ -763,22 +818,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"EBoardType": {
-				"enum": [
-					"scrum",
-					"kanban"
-				],
-				"type": "string"
-			},
-			"ESprintStatus": {
-				"enum": [
-					"future",
-					"active",
-					"closed"
-				],
-				"type": "string"
-			},
-			"IBoardDto": {
+			"ISprintDto": {
 				"properties": {
 					"id": {
 						"type": "string"
@@ -786,8 +826,19 @@
 					"name": {
 						"type": "string"
 					},
-					"type": {
-						"$ref": "#/components/schemas/EBoardType"
+					"goal": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"status": {
+						"$ref": "#/components/schemas/ESprintStatus"
 					},
 					"createdAt": {
 						"type": "string",
@@ -797,23 +848,22 @@
 						"type": "string",
 						"format": "date-time"
 					},
-					"project": {
-						"$ref": "#/components/schemas/IProjectDto"
+					"board": {
+						"$ref": "#/components/schemas/IBoardDto"
 					},
-					"sprints": {
+					"issues": {
 						"items": {
-							"$ref": "#/components/schemas/ISprintDto"
+							"$ref": "#/components/schemas/IIssueDto"
 						},
 						"type": "array"
-					},
-					"activeSprint": {
-						"$ref": "#/components/schemas/ISprintDto"
 					}
 				},
 				"required": [
 					"id",
 					"name",
-					"type",
+					"startDate",
+					"endDate",
+					"status",
 					"createdAt",
 					"updatedAt"
 				],
@@ -878,70 +928,12 @@
 							"$ref": "#/components/schemas/ICommentDto"
 						},
 						"type": "array"
-					},
-					"labels": {
-						"items": {
-							"$ref": "#/components/schemas/ILabelDto"
-						},
-						"type": "array"
 					}
 				},
 				"required": [
 					"id",
 					"key",
 					"title",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ISprintDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"goal": {
-						"type": "string"
-					},
-					"startDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"endDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"status": {
-						"$ref": "#/components/schemas/ESprintStatus"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"board": {
-						"$ref": "#/components/schemas/IBoardDto"
-					},
-					"issues": {
-						"items": {
-							"$ref": "#/components/schemas/IIssueDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"startDate",
-					"endDate",
-					"status",
 					"createdAt",
 					"updatedAt"
 				],
@@ -980,7 +972,53 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ILabelDto": {
+			"IBoardListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IBoardDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStatusWithIssuesDto": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/IStatusDto"
+					},
+					"issues": {
+						"items": {
+							"$ref": "#/components/schemas/IIssueDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status",
+					"issues"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBoardWithStatusesDto": {
 				"properties": {
 					"id": {
 						"type": "string"
@@ -988,11 +1026,8 @@
 					"name": {
 						"type": "string"
 					},
-					"color": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
+					"type": {
+						"$ref": "#/components/schemas/EBoardType"
 					},
 					"createdAt": {
 						"type": "string",
@@ -1001,15 +1036,253 @@
 					"updatedAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"project": {
+						"$ref": "#/components/schemas/IProjectDto"
+					},
+					"sprints": {
+						"items": {
+							"$ref": "#/components/schemas/ISprintDto"
+						},
+						"type": "array"
+					},
+					"activeSprint": {
+						"$ref": "#/components/schemas/ISprintDto"
+					},
+					"statuses": {
+						"items": {
+							"$ref": "#/components/schemas/IStatusWithIssuesDto"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"id",
 					"name",
-					"color",
+					"type",
+					"createdAt",
+					"updatedAt",
+					"statuses"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBoardCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/EBoardType"
+					},
+					"projectId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"type",
+					"projectId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBoardUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/EBoardType"
+					},
+					"projectId": {
+						"type": "string"
+					},
+					"activeSprintId": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStatusListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IStatusDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStatusCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"isInitial": {
+						"type": "boolean"
+					},
+					"isFinal": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStatusUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"isInitial": {
+						"type": "boolean"
+					},
+					"isFinal": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"isDefault": {
+						"type": "boolean"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"board": {
+						"$ref": "#/components/schemas/IBoardDto"
+					},
+					"statuses": {
+						"items": {
+							"$ref": "#/components/schemas/IStatusDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"isDefault",
 					"createdAt",
 					"updatedAt"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IWorkflowDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"boardId": {
+						"type": "string"
+					},
+					"isDefault": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name",
+					"boardId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWorkflowUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"boardId": {
+						"type": "string"
+					},
+					"isDefault": {
+						"type": "boolean"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1078,12 +1351,6 @@
 					"estimate": {
 						"type": "number",
 						"format": "double"
-					},
-					"labels": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
 					}
 				},
 				"required": [
@@ -1135,14 +1402,29 @@
 					"estimate": {
 						"type": "number",
 						"format": "double"
-					},
-					"labels": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IIssueOrderUpdateRequest": {
+				"properties": {
+					"statusId": {
+						"type": "string"
+					},
+					"order": {
+						"type": "number",
+						"format": "double"
+					},
+					"boardId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"statusId",
+					"order",
+					"boardId"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1366,71 +1648,6 @@
 					"deviceId",
 					"signature"
 				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IBoardListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IBoardDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IBoardCreateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/EBoardType"
-					},
-					"projectId": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"type",
-					"projectId"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IBoardUpdateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/EBoardType"
-					},
-					"projectId": {
-						"type": "string"
-					},
-					"activeSprintId": {
-						"type": "string"
-					}
-				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -2234,187 +2451,6 @@
 					"committed"
 				],
 				"type": "string"
-			},
-			"IStatusListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IStatusDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IStatusCreateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"isInitial": {
-						"type": "boolean"
-					},
-					"isFinal": {
-						"type": "boolean"
-					}
-				},
-				"required": [
-					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IStatusUpdateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"isInitial": {
-						"type": "boolean"
-					},
-					"isFinal": {
-						"type": "boolean"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWorkflowDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"isDefault": {
-						"type": "boolean"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"board": {
-						"$ref": "#/components/schemas/IBoardDto"
-					},
-					"statuses": {
-						"items": {
-							"$ref": "#/components/schemas/IStatusDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"isDefault",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWorkflowListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IWorkflowDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWorkflowCreateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"boardId": {
-						"type": "string"
-					},
-					"isDefault": {
-						"type": "boolean"
-					}
-				},
-				"required": [
-					"name",
-					"boardId"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWorkflowUpdateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"boardId": {
-						"type": "string"
-					},
-					"isDefault": {
-						"type": "boolean"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -3702,6 +3738,895 @@
 				]
 			}
 		},
+		"/api/board/list": {
+			"get": {
+				"operationId": "GetBoards",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBoardListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Board"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "projectId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/board/{id}/issued": {
+			"get": {
+				"operationId": "GetFullBoard",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBoardWithStatusesDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Board"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/board/{id}": {
+			"get": {
+				"operationId": "GetBoardById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBoardDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Board"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateBoard",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBoardDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Board"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IBoardUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteBoard",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Board"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/board": {
+			"post": {
+				"operationId": "CreateBoard",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBoardDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Board"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IBoardCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/board/{boardId}/sprints/{sprintId}/activate": {
+			"post": {
+				"operationId": "SetActiveSprint",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBoardDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Board"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "boardId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "sprintId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/status/list": {
+			"get": {
+				"operationId": "GetStatuses",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/status/{id}": {
+			"get": {
+				"operationId": "GetStatusById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IStatusUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/status": {
+			"post": {
+				"operationId": "CreateStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Status"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IStatusCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/workflow/list": {
+			"get": {
+				"operationId": "GetWorkflows",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "boardId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/{id}": {
+			"get": {
+				"operationId": "GetWorkflowById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWorkflowUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow": {
+			"post": {
+				"operationId": "CreateWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWorkflowCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/workflow/{workflowId}/statuses/{statusId}/wip-limit": {
+			"patch": {
+				"operationId": "SetWipLimit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/{workflowId}/statuses/{statusId}/wip-check": {
+			"get": {
+				"operationId": "CheckWipLimit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"exceeded": {
+											"type": "boolean"
+										},
+										"limit": {
+											"type": "number",
+											"format": "double"
+										},
+										"current": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"exceeded",
+										"current"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/{workflowId}/statuses/{statusId}": {
+			"post": {
+				"operationId": "AddStatusToWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "RemoveStatusFromWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/issue/list": {
 			"get": {
 				"operationId": "GetIssues",
@@ -3988,6 +4913,51 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/issue/{id}/order": {
+			"put": {
+				"operationId": "UpdateIssueOrder",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IIssueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Issue"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IIssueOrderUpdateRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/api/backlog/list": {
@@ -4386,255 +5356,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/api/board/list": {
-			"get": {
-				"operationId": "GetBoards",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IBoardListDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Board"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "offset",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "projectId",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/board/{id}": {
-			"get": {
-				"operationId": "GetBoardById",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IBoardDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Board"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"patch": {
-				"operationId": "UpdateBoard",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IBoardDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Board"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IBoardUpdateRequest"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeleteBoard",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Board"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/board": {
-			"post": {
-				"operationId": "CreateBoard",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IBoardDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Board"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IBoardCreateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/board/{boardId}/sprints/{sprintId}/activate": {
-			"post": {
-				"operationId": "SetActiveSprint",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IBoardDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Board"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "boardId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "sprintId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/api/file": {
@@ -6414,615 +7135,6 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/EPlanningItemStatus"
-						}
-					}
-				]
-			}
-		},
-		"/api/status/list": {
-			"get": {
-				"operationId": "GetStatuses",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IStatusListDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Status"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "offset",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/status/{id}": {
-			"get": {
-				"operationId": "GetStatusById",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IStatusDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Status"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"patch": {
-				"operationId": "UpdateStatus",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IStatusDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Status"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IStatusUpdateRequest"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeleteStatus",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Status"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/status": {
-			"post": {
-				"operationId": "CreateStatus",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IStatusDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Status"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IStatusCreateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/workflow/list": {
-			"get": {
-				"operationId": "GetWorkflows",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowListDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "offset",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "boardId",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/workflow/{id}": {
-			"get": {
-				"operationId": "GetWorkflowById",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"patch": {
-				"operationId": "UpdateWorkflow",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IWorkflowUpdateRequest"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeleteWorkflow",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/workflow": {
-			"post": {
-				"operationId": "CreateWorkflow",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IWorkflowCreateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/workflow/{workflowId}/statuses/{statusId}/wip-limit": {
-			"patch": {
-				"operationId": "SetWipLimit",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "workflowId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "statusId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/workflow/{workflowId}/statuses/{statusId}/wip-check": {
-			"get": {
-				"operationId": "CheckWipLimit",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"exceeded": {
-											"type": "boolean"
-										},
-										"limit": {
-											"type": "number",
-											"format": "double"
-										},
-										"current": {
-											"type": "number",
-											"format": "double"
-										}
-									},
-									"required": [
-										"exceeded",
-										"current"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "workflowId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "statusId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/workflow/{workflowId}/statuses/{statusId}": {
-			"post": {
-				"operationId": "AddStatusToWorkflow",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "workflowId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "statusId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "order",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			},
-			"delete": {
-				"operationId": "RemoveStatusFromWorkflow",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "workflowId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "path",
-						"name": "statusId",
-						"required": true,
-						"schema": {
-							"type": "string"
 						}
 					}
 				]

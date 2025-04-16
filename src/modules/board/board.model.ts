@@ -12,8 +12,10 @@ import {
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
+import { IIssueDto } from "../issue/issue.model";
 import { IProjectDto, Project } from "../project/project.model";
 import { ISprintDto, Sprint } from "../sprint/sprint.model";
+import { IStatusDto } from "../status/status.model";
 
 export enum EBoardType {
   SCRUM = "scrum",
@@ -32,6 +34,15 @@ export interface IBoardDto {
 }
 
 export interface IBoardListDto extends ListResponse<IBoardDto[]> {}
+
+export interface IBoardWithStatusesDto extends IBoardDto {
+  statuses: IStatusWithIssuesDto[];
+}
+
+export interface IStatusWithIssuesDto {
+  status: IStatusDto;
+  issues: IIssueDto[];
+}
 
 export interface IBoardCreateRequest {
   name: string;

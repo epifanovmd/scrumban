@@ -6,17 +6,18 @@ import {
   Get,
   Patch,
   Post,
+  Put,
   Query,
   Route,
   Security,
   Tags,
 } from "tsoa";
 
-import { ApiResponse } from "../../dto/ApiResponse";
 import {
   IIssueCreateRequest,
   IIssueDto,
   IIssueListDto,
+  IIssueOrderUpdateRequest,
   IIssueUpdateRequest,
 } from "./issue.model";
 import { IssueService } from "./issue.service";
@@ -86,6 +87,17 @@ export class IssueController extends Controller {
   changeStatus(issueId: string, statusId: string): Promise<IIssueDto> {
     return this._issueService
       .changeStatus(issueId, statusId)
+      .then(res => res.toJSON());
+  }
+
+  @Security("jwt")
+  @Put("{id}/order")
+  async updateIssueOrder(
+    @Query("id") id: string,
+    @Body() body: IIssueOrderUpdateRequest,
+  ): Promise<IIssueDto> {
+    return this._issueService
+      .updateIssueOrder(id, body.statusId, body.order, body.boardId)
       .then(res => res.toJSON());
   }
 }

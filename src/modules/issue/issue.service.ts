@@ -4,10 +4,12 @@ import {
   NotFoundException,
 } from "@force-dev/utils";
 import { inject, injectable } from "inversify";
-import { Includeable, Transaction, WhereOptions } from "sequelize";
+import { Includeable, Op, Transaction, WhereOptions } from "sequelize";
 
 import { sequelize } from "../../db";
+import { BoardService } from "../board";
 import { Board, EBoardType } from "../board/board.model";
+import { IssueOrder } from "../issue-order/issue-order.model";
 import { IssueType } from "../issue-type/issue-type.model";
 import { Priority } from "../priority/priority.model";
 import { ProjectService } from "../project";
@@ -16,6 +18,7 @@ import { ESprintStatus, Sprint } from "../sprint/sprint.model";
 import { Status } from "../status/status.model";
 import { UserService } from "../user";
 import { User } from "../user/user.model";
+import { WorkflowService } from "../workflow";
 import { Workflow, WorkflowStatus } from "../workflow/workflow.model";
 import { IIssueCreateRequest, IIssueUpdateRequest, Issue } from "./issue.model";
 
@@ -24,6 +27,8 @@ export class IssueService {
   constructor(
     @inject(UserService) private _userService: UserService,
     @inject(ProjectService) private _projectService: ProjectService,
+    @inject(BoardService) private _boardService: BoardService,
+    @inject(WorkflowService) private _workflowService: WorkflowService,
   ) {}
 
   async getIssues(
@@ -148,6 +153,57 @@ export class IssueService {
     }
 
     return issue.update({ statusId });
+  }
+
+  async updateIssueOrder(
+    issueId: string,
+    newStatusId: string,
+    newOrder: number,
+    boardId: string,
+  ) {
+    return sequelize.transaction(async (t: Transaction) => {
+      const issue = await this.getIssueById(issueId, t);
+      const board = await Board.findByPk(boardId, { transaction: t });
+
+      if (!board) throw new NotFoundException("Board not found");
+
+      const status = await Status.findByPk(newStatusId, { transaction: t });
+
+      if (!status) throw new NotFoundException("Status not found");
+
+      // Удаляем старую запись о порядке (если есть)
+      await IssueOrder.destroy({
+        where: { issueId },
+        transaction: t,
+      });
+
+      // Обновляем порядок всех задач после новой позиции
+      await IssueOrder.increment("order", {
+        by: 1,
+        where: {
+          boardId,
+          statusId: newStatusId,
+          order: { [Op.gte]: newOrder },
+        },
+        transaction: t,
+      });
+
+      // Создаем новую запись о порядке
+      await IssueOrder.create(
+        {
+          issueId,
+          statusId: newStatusId,
+          boardId,
+          order: newOrder,
+        },
+        { transaction: t },
+      );
+
+      // Обновляем статус задачи
+      await issue.update({ statusId: newStatusId }, { transaction: t });
+
+      return this.getIssueById(issueId, t);
+    });
   }
 
   private async _validateIssueDependencies(

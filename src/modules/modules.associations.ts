@@ -7,6 +7,7 @@ import { Board } from "./board/board.model";
 import { Comment } from "./comment/comment.model";
 import { Files } from "./file/file.model";
 import { Issue } from "./issue/issue.model";
+import { IssueOrder } from "./issue-order/issue-order.model";
 import { IssueType } from "./issue-type/issue-type.model";
 import { Otp } from "./otp/otp.model";
 import { Passkeys } from "./passkeys/passkeys.model";
@@ -154,6 +155,15 @@ User.hasMany(Issue, { as: "reportedIssues", foreignKey: "reporterId" });
 
 Issue.belongsTo(Issue, { as: "parent", foreignKey: "parentId" });
 Issue.hasMany(Issue, { as: "children", foreignKey: "parentId" });
+
+Issue.hasMany(IssueOrder, { foreignKey: "issueId", as: "orderEntries" });
+IssueOrder.belongsTo(Issue, { foreignKey: "issueId" });
+
+Status.hasMany(IssueOrder, { foreignKey: "statusId" });
+IssueOrder.belongsTo(Status, { foreignKey: "statusId" });
+
+Board.hasMany(IssueOrder, { foreignKey: "boardId" });
+IssueOrder.belongsTo(Board, { foreignKey: "boardId" });
 
 // Элементы бэклога
 Backlog.belongsToMany(Issue, { through: BacklogItem, as: "backlogIssues" });
