@@ -8,6 +8,10 @@ import { Board } from "../board/board.model";
 import { StatusService } from "../status";
 import { Status } from "../status/status.model";
 import {
+  IStatusTransitionsGraph,
+  StatusTransition,
+} from "../status-transition/status-transition.model";
+import {
   IWorkflowCreateRequest,
   IWorkflowUpdateRequest,
   Workflow,
@@ -49,6 +53,45 @@ export class WorkflowService {
     await this._boardService.getBoardById(boardId);
 
     return this.getWorkflows(offset, limit, { boardId });
+  }
+
+  async addTransition(
+    workflowId: string,
+    fromStatusId: string,
+    toStatusId: string,
+  ) {
+    return StatusTransition.create({ workflowId, fromStatusId, toStatusId });
+  }
+
+  async removeTransition(transitionId: string) {
+    return StatusTransition.destroy({
+      where: { id: transitionId },
+    });
+  }
+
+  async getAvailableTransitions(workflowId: string, statusId: string) {
+    return StatusTransition.findAll({
+      where: { fromStatusId: statusId, workflowId },
+      include: [
+        { model: Status, as: "fromStatus" },
+        { model: Status, as: "toStatus" },
+      ],
+    });
+  }
+
+  async getWorkflowGraph(workflowId: string) {
+    const transitions = await StatusTransition.findAll({
+      where: { workflowId },
+      include: [
+        { model: Status, as: "fromStatus" },
+        { model: Status, as: "toStatus" },
+      ],
+    });
+
+    return transitions.map<IStatusTransitionsGraph>(t => ({
+      from: t.fromStatus.name,
+      to: t.toStatus.name,
+    }));
   }
 
   async createWorkflow(data: IWorkflowCreateRequest) {

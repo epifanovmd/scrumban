@@ -24,6 +24,7 @@ import {
   SprintPlanningParticipant,
 } from "./sprint-planning/sprint-planning.model";
 import { Status } from "./status/status.model";
+import { StatusTransition } from "./status-transition/status-transition.model";
 import { Team, TeamMember } from "./team/team.model";
 import { User } from "./user/user.model";
 import { Workflow, WorkflowStatus } from "./workflow/workflow.model";
@@ -273,6 +274,33 @@ Workflow.belongsToMany(Status, {
 Status.belongsToMany(Workflow, {
   through: WorkflowStatus,
   as: "workflows",
+});
+
+// В Workflow модели
+Workflow.hasMany(StatusTransition, {
+  foreignKey: "workflowId",
+  as: "transitions",
+});
+
+// В Status модели
+Status.hasMany(StatusTransition, {
+  foreignKey: "fromStatusId",
+  as: "outgoingTransitions",
+});
+
+Status.hasMany(StatusTransition, {
+  foreignKey: "toStatusId",
+  as: "incomingTransitions",
+});
+
+StatusTransition.belongsTo(Status, {
+  foreignKey: "fromStatusId",
+  as: "fromStatus",
+});
+
+StatusTransition.belongsTo(Status, {
+  foreignKey: "toStatusId",
+  as: "toStatus",
 });
 
 // Комментарии

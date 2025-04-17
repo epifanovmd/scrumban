@@ -15,6 +15,11 @@ import {
 
 import { Issue } from "../issue/issue.model";
 import {
+  IStatusTransitionCreateRequest,
+  IStatusTransitionDto,
+  IStatusTransitionsGraph,
+} from "../status-transition/status-transition.model";
+import {
   IWorkflowCreateRequest,
   IWorkflowDto,
   IWorkflowListDto,
@@ -51,9 +56,17 @@ export class WorkflowController extends Controller {
   }
 
   @Security("jwt")
-  @Get("{id}")
-  getWorkflowById(id: string): Promise<IWorkflowDto> {
-    return this._workflowService.getWorkflowById(id).then(res => res.toJSON());
+  @Get("{workflowId}")
+  async getWorkflowById(workflowId: string): Promise<IWorkflowDto> {
+    const res = await this._workflowService.getWorkflowById(workflowId);
+
+    return res.toJSON();
+  }
+
+  @Security("jwt")
+  @Get("{workflowId}/graph")
+  getWorkflowGraph(workflowId: string): Promise<IStatusTransitionsGraph[]> {
+    return this._workflowService.getWorkflowGraph(workflowId);
   }
 
   @Security("jwt", ["role:admin"])
@@ -92,7 +105,12 @@ export class WorkflowController extends Controller {
 
     await WorkflowStatus.update(
       { wipLimit: limit },
-      { where: { workflowId, statusId } },
+      {
+        where: {
+          workflowId,
+          statusId,
+        },
+      },
     );
 
     return this._workflowService
@@ -107,7 +125,10 @@ export class WorkflowController extends Controller {
     statusId: string,
   ): Promise<{ current: number; limit?: number; exceeded: boolean }> {
     const status = await WorkflowStatus.findOne({
-      where: { workflowId, statusId },
+      where: {
+        workflowId,
+        statusId,
+      },
     });
 
     if (!status) {
@@ -121,6 +142,34 @@ export class WorkflowController extends Controller {
       limit: status.wipLimit,
       exceeded: status.wipLimit ? current >= status.wipLimit : false,
     };
+  }
+
+  @Security("jwt")
+  @Get("transition/{workflowId}/status/{statusId}")
+  getAvailableTransitions(
+    workflowId: string,
+    statusId: string,
+  ): Promise<IStatusTransitionDto[]> {
+    return this._workflowService.getAvailableTransitions(workflowId, statusId);
+  }
+
+  @Security("jwt")
+  @Post("transition/{workflowId}")
+  addTransition(
+    workflowId: string,
+    @Body() params: IStatusTransitionCreateRequest,
+  ): Promise<IStatusTransitionDto> {
+    return this._workflowService.addTransition(
+      workflowId,
+      params.fromStatusId,
+      params.toStatusId,
+    );
+  }
+
+  @Security("jwt")
+  @Delete("transition/{transitionId}")
+  removeTransition(transitionId: string): Promise<number> {
+    return this._workflowService.removeTransition(transitionId);
   }
 
   @Security("jwt")

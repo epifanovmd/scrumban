@@ -1,4 +1,4 @@
-# REST API TEMPLATE
+# SCRUMBAN REST API
 
 ##### Stack:
   - Typescript

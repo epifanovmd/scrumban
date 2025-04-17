@@ -822,6 +822,121 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ESprintPlanningStatus": {
+				"enum": [
+					"planning",
+					"planned",
+					"active",
+					"closed"
+				],
+				"type": "string"
+			},
+			"ISprintDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"goal": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"status": {
+						"$ref": "#/components/schemas/ESprintStatus"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"board": {
+						"$ref": "#/components/schemas/IBoardDto"
+					},
+					"planning": {
+						"$ref": "#/components/schemas/ISprintPlanningDto"
+					},
+					"issues": {
+						"items": {
+							"$ref": "#/components/schemas/IIssueDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"startDate",
+					"endDate",
+					"status",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISprintPlanningDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/ESprintPlanningStatus"
+					},
+					"plannedVelocity": {
+						"type": "number",
+						"format": "double"
+					},
+					"actualVelocity": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"sprint": {
+						"$ref": "#/components/schemas/ISprintDto"
+					},
+					"participants": {
+						"items": {
+							"$ref": "#/components/schemas/IUserDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"status",
+					"createdAt",
+					"updatedAt",
+					"participants"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IIssueDto": {
 				"properties": {
 					"id": {
@@ -886,58 +1001,6 @@
 					"id",
 					"key",
 					"title",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ISprintDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"goal": {
-						"type": "string"
-					},
-					"startDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"endDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"status": {
-						"$ref": "#/components/schemas/ESprintStatus"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"board": {
-						"$ref": "#/components/schemas/IBoardDto"
-					},
-					"issues": {
-						"items": {
-							"$ref": "#/components/schemas/IIssueDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"startDate",
-					"endDate",
-					"status",
 					"createdAt",
 					"updatedAt"
 				],
@@ -2033,31 +2096,10 @@
 				"additionalProperties": false
 			},
 			"ISprintListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/ISprintDto"
-						},
-						"type": "array"
-					}
+				"items": {
+					"$ref": "#/components/schemas/ISprintDto"
 				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
+				"type": "array"
 			},
 			"ISprintCreateRequest": {
 				"properties": {
@@ -2114,92 +2156,11 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ESprintPlanningStatus": {
-				"enum": [
-					"planning",
-					"planned",
-					"active",
-					"closed"
-				],
-				"type": "string"
-			},
-			"ISprintPlanningDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"status": {
-						"$ref": "#/components/schemas/ESprintPlanningStatus"
-					},
-					"plannedVelocity": {
-						"type": "number",
-						"format": "double"
-					},
-					"actualVelocity": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"sprint": {
-						"$ref": "#/components/schemas/ISprintDto"
-					},
-					"participants": {
-						"items": {
-							"$ref": "#/components/schemas/IUserDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"status",
-					"createdAt",
-					"updatedAt",
-					"participants"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ISprintPlanningListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/ISprintPlanningDto"
-						},
-						"type": "array"
-					}
+				"items": {
+					"$ref": "#/components/schemas/ISprintPlanningDto"
 				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
+				"type": "array"
 			},
 			"ISprintPlanningCreateRequest": {
 				"properties": {
@@ -2379,6 +2340,22 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IStatusTransitionsGraph": {
+				"properties": {
+					"from": {
+						"type": "string"
+					},
+					"to": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"from",
+					"to"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IWorkflowCreateRequest": {
 				"properties": {
 					"name": {
@@ -2418,6 +2395,54 @@
 				},
 				"type": "object",
 				"additionalProperties": false
+			},
+			"IStatusTransitionDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"workflowId": {
+						"type": "string"
+					},
+					"fromStatus": {
+						"$ref": "#/components/schemas/IStatusDto"
+					},
+					"toStatus": {
+						"$ref": "#/components/schemas/IStatusDto"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"workflowId",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStatusTransitionCreateRequest": {
+				"properties": {
+					"fromStatusId": {
+						"type": "string"
+					},
+					"toStatusId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"fromStatusId",
+					"toStatusId"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -2429,9 +2454,9 @@
 		}
 	},
 	"info": {
-		"title": "rest-api",
+		"title": "scrumban",
 		"version": "1.0.0",
-		"description": "REST API Template App",
+		"description": "Scrumban",
 		"license": {
 			"name": "MIT"
 		},
@@ -6765,7 +6790,7 @@
 				]
 			}
 		},
-		"/api/workflow/{id}": {
+		"/api/workflow/{workflowId}": {
 			"get": {
 				"operationId": "GetWorkflowById",
 				"responses": {
@@ -6791,14 +6816,92 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "id",
+						"name": "workflowId",
 						"required": true,
 						"schema": {
 							"type": "string"
 						}
 					}
 				]
-			},
+			}
+		},
+		"/api/workflow/{workflowId}/graph": {
+			"get": {
+				"operationId": "GetWorkflowGraph",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IStatusTransitionsGraph"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow": {
+			"post": {
+				"operationId": "CreateWorkflow",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWorkflowDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWorkflowCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/workflow/{id}": {
 			"patch": {
 				"operationId": "UpdateWorkflow",
 				"responses": {
@@ -6878,44 +6981,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/workflow": {
-			"post": {
-				"operationId": "CreateWorkflow",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWorkflowDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Workflow"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IWorkflowCreateRequest"
-							}
-						}
-					}
-				}
 			}
 		},
 		"/api/workflow/{workflowId}/statuses/{statusId}/wip-limit": {
@@ -7022,6 +7087,133 @@
 					{
 						"in": "path",
 						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/transition/{workflowId}/status/{statusId}": {
+			"get": {
+				"operationId": "GetAvailableTransitions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IStatusTransitionDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "statusId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/workflow/transition/{workflowId}": {
+			"post": {
+				"operationId": "AddTransition",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStatusTransitionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "workflowId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IStatusTransitionCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/workflow/transition/{transitionId}": {
+			"delete": {
+				"operationId": "RemoveTransition",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"format": "double"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Workflow"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "transitionId",
 						"required": true,
 						"schema": {
 							"type": "string"

@@ -1,7 +1,7 @@
 {
-  "name": "rest-api",
+  "name": "scrumban",
   "version": "1.0.0",
-  "description": "REST API Template App",
+  "description": "Scrumban",
   "private": true,
   "license": "MIT",
   "engines": {

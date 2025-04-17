@@ -399,6 +399,46 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ESprintPlanningStatus": {
+        "dataType": "refEnum",
+        "enums": ["planning","planned","active","closed"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ISprintDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "goal": {"dataType":"string"},
+            "startDate": {"dataType":"datetime","required":true},
+            "endDate": {"dataType":"datetime","required":true},
+            "status": {"ref":"ESprintStatus","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "board": {"ref":"IBoardDto"},
+            "planning": {"ref":"ISprintPlanningDto"},
+            "issues": {"dataType":"array","array":{"dataType":"refObject","ref":"IIssueDto"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ISprintPlanningDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "status": {"ref":"ESprintPlanningStatus","required":true},
+            "plannedVelocity": {"dataType":"double"},
+            "actualVelocity": {"dataType":"double"},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+            "sprint": {"ref":"ISprintDto"},
+            "participants": {"dataType":"array","array":{"dataType":"refObject","ref":"IUserDto"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IIssueDto": {
         "dataType": "refObject",
         "properties": {
@@ -419,23 +459,6 @@ const models: TsoaRoute.Models = {
             "reporter": {"ref":"IUserDto"},
             "parent": {"ref":"IIssueDto"},
             "comments": {"dataType":"array","array":{"dataType":"refObject","ref":"ICommentDto"}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ISprintDto": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "goal": {"dataType":"string"},
-            "startDate": {"dataType":"datetime","required":true},
-            "endDate": {"dataType":"datetime","required":true},
-            "status": {"ref":"ESprintStatus","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-            "board": {"ref":"IBoardDto"},
-            "issues": {"dataType":"array","array":{"dataType":"refObject","ref":"IIssueDto"}},
         },
         "additionalProperties": false,
     },
@@ -946,14 +969,8 @@ const models: TsoaRoute.Models = {
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISprintListDto": {
-        "dataType": "refObject",
-        "properties": {
-            "count": {"dataType":"double"},
-            "offset": {"dataType":"double"},
-            "limit": {"dataType":"double"},
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ISprintDto"},"required":true},
-        },
-        "additionalProperties": false,
+        "dataType": "refAlias",
+        "type": {"dataType":"array","array":{"dataType":"refObject","ref":"ISprintDto"},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISprintCreateRequest": {
@@ -981,37 +998,9 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ESprintPlanningStatus": {
-        "dataType": "refEnum",
-        "enums": ["planning","planned","active","closed"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ISprintPlanningDto": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string"},
-            "status": {"ref":"ESprintPlanningStatus","required":true},
-            "plannedVelocity": {"dataType":"double"},
-            "actualVelocity": {"dataType":"double"},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"datetime","required":true},
-            "sprint": {"ref":"ISprintDto"},
-            "participants": {"dataType":"array","array":{"dataType":"refObject","ref":"IUserDto"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISprintPlanningListDto": {
-        "dataType": "refObject",
-        "properties": {
-            "count": {"dataType":"double"},
-            "offset": {"dataType":"double"},
-            "limit": {"dataType":"double"},
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"ISprintPlanningDto"},"required":true},
-        },
-        "additionalProperties": false,
+        "dataType": "refAlias",
+        "type": {"dataType":"array","array":{"dataType":"refObject","ref":"ISprintPlanningDto"},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISprintPlanningCreateRequest": {
@@ -1098,6 +1087,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IStatusTransitionsGraph": {
+        "dataType": "refObject",
+        "properties": {
+            "from": {"dataType":"string","required":true},
+            "to": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IWorkflowCreateRequest": {
         "dataType": "refObject",
         "properties": {
@@ -1116,6 +1114,28 @@ const models: TsoaRoute.Models = {
             "description": {"dataType":"string"},
             "boardId": {"dataType":"string"},
             "isDefault": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IStatusTransitionDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "workflowId": {"dataType":"string","required":true},
+            "fromStatus": {"ref":"IStatusDto"},
+            "toStatus": {"ref":"IStatusDto"},
+            "createdAt": {"dataType":"datetime","required":true},
+            "updatedAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IStatusTransitionCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "fromStatusId": {"dataType":"string","required":true},
+            "toStatusId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -4360,14 +4380,14 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/workflow/:id',
+        router.get('/api/workflow/:workflowId',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<Middleware>(WorkflowController)),
             ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.getWorkflowById)),
 
             async function WorkflowController_getWorkflowById(context: any, next: any) {
             const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
             };
 
             let validatedArgs: any[] = [];
@@ -4387,6 +4407,36 @@ export function RegisterRoutes(router: KoaRouter) {
             }
 
             const promise = controller.getWorkflowById.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/workflow/:workflowId/graph',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.getWorkflowGraph)),
+
+            async function WorkflowController_getWorkflowGraph(context: any, next: any) {
+            const args = {
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getWorkflowGraph.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -4541,6 +4591,98 @@ export function RegisterRoutes(router: KoaRouter) {
             }
 
             const promise = controller.checkWipLimit.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/workflow/transition/:workflowId/status/:statusId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.getAvailableTransitions)),
+
+            async function WorkflowController_getAvailableTransitions(context: any, next: any) {
+            const args = {
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
+                    statusId: {"in":"path","name":"statusId","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getAvailableTransitions.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/workflow/transition/:workflowId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.addTransition)),
+
+            async function WorkflowController_addTransition(context: any, next: any) {
+            const args = {
+                    workflowId: {"in":"path","name":"workflowId","required":true,"dataType":"string"},
+                    params: {"in":"body","name":"params","required":true,"ref":"IStatusTransitionCreateRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.addTransition.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/workflow/transition/:transitionId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WorkflowController)),
+            ...(fetchMiddlewares<Middleware>(WorkflowController.prototype.removeTransition)),
+
+            async function WorkflowController_removeTransition(context: any, next: any) {
+            const args = {
+                    transitionId: {"in":"path","name":"transitionId","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WorkflowController>(WorkflowController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.removeTransition.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

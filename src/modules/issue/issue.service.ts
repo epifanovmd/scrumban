@@ -17,6 +17,7 @@ import { ProjectService } from "../project";
 import { Project } from "../project/project.model";
 import { ESprintStatus, Sprint } from "../sprint/sprint.model";
 import { Status } from "../status/status.model";
+import { StatusTransition } from "../status-transition/status-transition.model";
 import { UserService } from "../user";
 import { User } from "../user/user.model";
 import { Workflow, WorkflowStatus } from "../workflow/workflow.model";
@@ -161,24 +162,50 @@ export class IssueService {
   }
 
   async changeStatus(issueId: string, statusId: string) {
-    const issue = await this.getIssueById(issueId);
-    const board = await Board.findByPk(issue.boardId);
+    return sequelize.transaction(async t => {
+      const issue = await this.getIssueById(issueId);
+      const board = await Board.findByPk(issue.boardId);
 
-    // Для Kanban проверяем WIP-лимиты
-    if (board?.type === EBoardType.KANBAN) {
-      await this._checkWipLimit(statusId);
-    }
-
-    // Для Scrum нельзя менять статусы задач в закрытом спринте
-    if (issue.sprintId) {
-      const sprint = await Sprint.findByPk(issue.sprintId);
-
-      if (sprint?.status === ESprintStatus.CLOSED) {
-        throw new ForbiddenException("Cannot change status in closed sprint");
+      // 1. Проверка WIP-лимитов для Kanban
+      if (board?.type === EBoardType.KANBAN) {
+        await this._checkWipLimit(statusId, t);
       }
-    }
 
-    return issue.update({ statusId });
+      // 2. Проверка закрытых спринтов для Scrum
+      if (issue.sprintId) {
+        const sprint = await Sprint.findByPk(issue.sprintId, {
+          transaction: t,
+        });
+
+        if (sprint?.status === ESprintStatus.CLOSED) {
+          throw new ForbiddenException("Cannot change status in closed sprint");
+        }
+      }
+
+      // 3. Проверка допустимости перехода статусов
+      const workflow = await Workflow.findOne({
+        where: { boardId: issue.boardId },
+        include: [
+          {
+            model: StatusTransition,
+            as: "transitions",
+            where: {
+              fromStatusId: issue.statusId,
+              toStatusId: statusId,
+            },
+          },
+        ],
+        transaction: t,
+      });
+
+      if (!workflow) {
+        throw new BadRequestException(
+          `Transition from ${issue.statusId} to ${statusId} is not allowed`,
+        );
+      }
+
+      return issue.update({ statusId }, { transaction: t });
+    });
   }
 
   async updateIssueOrder(
